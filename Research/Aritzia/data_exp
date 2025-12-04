@@ -1,0 +1,71 @@
+fetch("https://www.aritzia.com/api/Aritzia_INTL/ocapi/baskets/e812c7d0b41b26dd007eb6fce6/customer", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9,ro;q=0.8",
+    "atz-mrt-user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+    "authorization": "Bearer eyJ2ZXIiOiIxLjAiLCJqa3UiOiJzbGFzL3Byb2QvYWFpdl9wcmQiLCJraWQiOiI5MDI4YmI3Yy1lMTE2LTQ4MDktYjhkOS0wM2RlODhkZWY3NDQiLCJ0eXAiOiJqd3QiLCJjbHYiOiJKMi4zLjQiLCJhbGciOiJFUzI1NiJ9.eyJhdXQiOiJHVUlEIiwic2NwIjoic2ZjYy5zaG9wcGVyLW15YWNjb3VudC5iYXNrZXRzIHNmY2Muc2hvcHBlci1kaXNjb3Zlcnktc2VhcmNoIGNfc2FsZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cyBzZmNjLnNob3BwZXItY3VzdG9tZXJzLmxvZ2luIGNfcHJvZHVjdCBjX3BheW1lbnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5vcmRlcnMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RsaXN0cyBzZmNjLnNob3BwZXItY3VzdG9tLW9iamVjdHMgc2ZjYy5zaG9wcGVyLXByb21vdGlvbnMgc2ZjYy5zZXNzaW9uX2JyaWRnZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cy5ydyBjX2N1c3RvbWVyIGNfcGF5cGFsX3J3IHNmY2Muc2hvcHBlci1teWFjY291bnQucHJvZHVjdGxpc3RzIHNmY2Muc2hvcHBlci1jYXRlZ29yaWVzIHNmY2Muc2hvcHBlci1teWFjY291bnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RzIHNmY2Muc2hvcHBlci1teWFjY291bnQucncgY19jdXN0b21lckdyb3Vwc19yIGNfc2FsZXNIaXN0b3J5X3Igc2ZjYy5zaG9wcGVyLWNvbnRleHQucncgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzIHNmY2Muc2hvcHBlci1jdXN0b21lcnMucmVnaXN0ZXIgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMucncgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5wcm9kdWN0bGlzdHMucncgY19iYXNrZXQgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzLnJ3IHNmY2Muc2hvcHBlci1naWZ0LWNlcnRpZmljYXRlcyBzZmNjLnNob3BwZXItcHJvZHVjdC1zZWFyY2giLCJzdWIiOiJjYy1zbGFzOjphYWl2X3ByZDo6c2NpZDplYThlYjhjNS0yZWIzLTQ5ZDUtYjY5Yy0yODliYmU0YzA1NjE6OnVzaWQ6MTMyNDc3OTQtMDlmZi00ZWQwLTg2NjctZjk4Mjg2NjZlYzNiIiwiY3R4Ijoic2xhcyIsImlzcyI6InNsYXMvcHJvZC9hYWl2X3ByZCIsImlzdCI6MSwiZG50IjoiMCIsImF1ZCI6ImNvbW1lcmNlY2xvdWQvcHJvZC9hYWl2X3ByZCIsIm5iZiI6MTc2NDIzNzU0MSwic3R5IjoiVXNlciIsImlzYiI6InVpZG86ZWNvbTo6dXBuOmR1cHB5LndlYkBnbWFpbC5jb206OnVpZG46QmVuY3NpayBPc3prYXI6OmdjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OnJjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OmNoaWQ6QXJpdHppYV9JTlRMIiwiZXhwIjoxNzY0MjM5MzcxLCJpYXQiOjE3NjQyMzc1NzEsImp0aSI6IkMyQy0xMDkwNTQzMTk2MDgyODEyNTAxMTY1NDY4OTI2MjcwMTkxMDgifQ._Q0hOM1g4zAe0UsgOc9a4KlLGuUUVla4RBctQJsxqahw21Lxctzp2peIvyvnM7sf1BKaZyaEKwihG9AVmrRowA",
+    "content-type": "application/json",
+    "priority": "u=1, i",
+    "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"macOS\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "x-dw-client-id": "ea8eb8c5-2eb3-49d5-b69c-289bbe4c0561",
+    "x-dw-http-method-override": "PUT"
+  },
+  "referrer": "https://www.aritzia.com/intl/en/home",
+  "body": "{\"email\":\"duppy.web+ro@gmail.com\"}",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+});
+
+
+
+
+9009245052
+   "customer_no": "9009245077",
+
+Second reg
+{
+    "_v": "24.5",
+    "_type": "customer",
+    "_resource_state": "2eaf485681e6eee09b0a298f8d92f2cd5b6acbde3ef093980a7135e6ee9abb74",
+    "auth_type": "registered",
+    "creation_date": "2025-11-27T10:12:55.727Z",
+    "customer_id": "ablHgZkbhHxHERwHgXxqYYl0c3",
+    "customer_no": "9009245077",
+    "email": "rhipmjknunbajlyidf@nespf.com",
+    "enabled": true,
+    "first_name": "Gipsz",
+    "hashed_login": "e889f18b404b040d48d4b4e6ff82a65a8df8a70f67498eabf9583e424922c187",
+    "last_modified": "2025-11-27T10:12:57.440Z",
+    "last_name": "Jakab",
+    "login": "rhipmjknunbajlyidf@nespf.com",
+    "preferred_locale": "default",
+    "c_addtoemaillist": true,
+    "c_cdcUID": "e889f18b404b040d48d4b4e6ff82a65a8df8a70f67498eabf9583e424922c187",
+    "c_emailpreference": "1",
+    "c_exportStatus": 2
+}
+
+
+
+
+    "customer_info": {
+        "_type": "customer_info",
+        "customer_id": "abkrkWlbA1mroRkbJKxGYYxuoU",
+        "customer_no": "9009245052",
+        "email": "rhipmjknunbajlyidf@nespf.com"
+    },
+
+
+
+    "customer_info": {
+        "_type": "customer_info",
+        "customer_id": "abkrkWlbA1mroRkbJKxGYYxuoU",
+        "customer_no": "9009245052",
+        "email": "duppy.web@gmail.com"
+    },

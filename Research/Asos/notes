@@ -1,0 +1,50 @@
+fetch("https://my.asos.com/api/customer/profile/v2/customers/310850824/addresses", {
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9,ro;q=0.8",
+    "asos-c-ismobile": "false",
+    "asos-c-istablet": "false",
+    "asos-c-name": "Asos.Customer.MyAccount.Web.Ui",
+    "asos-c-plat": "web",
+    "asos-c-shop": "asos",
+    "asos-c-ver": "2.0.0-480-a67088ff",
+    "asos-cid": "2ee7a4f42d534d59857b98c750d57f36",
+    "authorization": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkQzMzcyRDIzMEVFRjVGMDYwNzc1MjM5MUJCOTlDODY2RDcyM0RFNDAiLCJ4NXQiOiIwemN0SXc3dlh3WUhkU09SdTVuSVp0Y2oza0EiLCJ0eXAiOiJhdCtqd3QifQ.eyJpc3MiOiJodHRwczovL215LmFzb3MuY29tL3RydXN0IiwibmJmIjoxNzY0MjM5NTkxLCJpYXQiOjE3NjQyMzk1OTEsImV4cCI6MTc2NDI0MDE5MSwiYXVkIjoiaHR0cHM6Ly9hcGkuYXNvcy5jb20iLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwicGlpIiwic2Vuc2l0aXZlIiwicGNpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbImFzb3MiXSwiY2xpZW50X2lkIjoibXktYWNjb3VudCIsInN1YiI6IjMxMDg1MDgyNCIsImF1dGhfdGltZSI6MTc2MjYxNDYxMSwiaWRwIjoic2l0ZSIsInNpZCI6IjcyNUZDRTFDRjk3NjNBNzU5QTI0MjhGM0ZENEMyMjhGIiwiYWlkIjoiNmJkZDBmYTRkZGU3NGZkM2I0MGQ2Y2ZlZTk3ZWFkNDgiLCJzZXNzIjoiYWI0NGRlYjVmNzU5NDljYjkwMGVlNDg5MDhmZTQ0YTgiLCJjZ2QiOiIyZWU3YTRmNDJkNTM0ZDU5ODU3Yjk4Yzc1MGQ1N2YzNiIsInNob3AiOiJhc29zIiwiZnRiIjp0cnVlLCJqdGkiOiIzMzFEQUIxRjNEOUVBN0NGMzExOTU1QjkxMzVEQUFEMCJ9.cIQrG76lnxQlC_AvLrPSe9NNRifBNmZLmP68Fl6ePrmu440-cjVj4i1B2hCUtSK0cf-P5C3-VYciHQSmQAKMttp66ydtRbTMLwmIkQR3XXlWbUQR7WccdiYlhw357rDcmSzppXdBmLydfzX0rVglqciMyEc-6qjP4Pf6z2eibQn2cSCEfsmb7pcjBWL1AtnLeZ3dEgSWeigt1U-8g_mMTm_lTkk_vI3e3WwCkZ7C4Ag6jQl03pbQg2ETNDDgR1Y0BlmDMZbVOr0dzLlxPuLYR6l9eeGnddRtAhrB3cnTP24oBlk0o_PzLw0zYq5gQ0qWxWNR8eHksuuqOmMqp-PY_PYewiB__pnQUohi9xqEQcr98bf1vuDR-1Ccpgdw4ynUSKJ59ZHpopfOcl98KQcmis_TTaLmmJv7APWKazbOSn9dsG_YbE2j4Egr8RmHMW2L3zx7dnbyv0rAuWYQnnFQdgg9J6HYUvfDPshOfi4O9DM9bwbdSKAOHtyeEAYNV06xoxruLJEf-oaLcZXouA67XHZNzf9AlgTy4DYRH3ovJpIHgFSrOjvN1K3ApnvupRM0XvbJDPv7O4YbNcLQNanPurvQA3MA5JZ8LALHFIMjbXrdye_OzERJYVmqoCaelcNUkd3IeCuZ_hqDL1dW60562c3q9bmMLdj-mHbLsKr-Oo4",
+    "content-type": "application/json",
+    "newrelic": "eyJ2IjpbMCwxXSwiZCI6eyJ0eSI6IkJyb3dzZXIiLCJhYyI6IjcxMTc5OSIsImFwIjoiMzk5OTUwMzYiLCJpZCI6IjU4OTcyZjQ1YTY3MzA2NmUiLCJ0ciI6ImU0OWM5MmM1MjMyN2Q1OGUyM2QwZTRlMjM0OTFlMDIwIiwidGkiOjE3NjQyMzk3ODE1Mjd9fQ==",
+    "priority": "u=1, i",
+    "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"macOS\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "traceparent": "00-e49c92c52327d58e23d0e4e23491e020-58972f45a673066e-01",
+    "tracestate": "711799@nr=0-1-711799-39995036-58972f45a673066e----1764239781527"
+  },
+  "referrer": "https://my.asos.com/my-account/addresses/add",
+  "body": "{\"address1\":\"Drumul Biserici 36-38, Vila 12\",\"countryCode\":\"RO\",\"countyStateProvinceOrArea\":\"Romania (RO)\",\"firstName\":\"Fname\",\"lastName\":\"Lnae\",\"locality\":\"Voluntari\",\"postalCode\":\"077191\",\"telephoneMobile\":\"0756531296\",\"defaultBilling\":true,\"defaultDelivery\":true}",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+});
+
+
+{
+    "addressId": 390241150,
+    "firstName": "Fname",
+    "lastName": "Lnae",
+    "address1": "Drumul Biserici 36-38, Vila 12",
+    "locality": "Voluntari",
+    "countyStateProvinceOrArea": "Romania (RO)",
+    "postalCode": "077191",
+    "countryCode": "RO",
+    "defaultDelivery": true,
+    "defaultBilling": true,
+    "telephoneMobile": "0756531296",
+    "created": "2025-11-27T10:36:21.9134891Z",
+    "lastUpdated": "2025-11-27T10:36:21.9134891Z",
+    "verifiedStatus": "NotRequired"
+}
+
+390241239

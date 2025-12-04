@@ -1,0 +1,141 @@
+curl 'https://www.aritzia.com/api/Aritzia_INTL/ocapi/customers?locale=default' \
+  -H 'accept: */*' \
+  -H 'accept-language: en-US,en;q=0.9,ro;q=0.8' \
+  -H 'atz-mrt-user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'authorization: Bearer eyJ2ZXIiOiIxLjAiLCJqa3UiOiJzbGFzL3Byb2QvYWFpdl9wcmQiLCJraWQiOiI5MDI4YmI3Yy1lMTE2LTQ4MDktYjhkOS0wM2RlODhkZWY3NDQiLCJ0eXAiOiJqd3QiLCJjbHYiOiJKMi4zLjQiLCJhbGciOiJFUzI1NiJ9.eyJhdXQiOiJHVUlEIiwic2NwIjoic2ZjYy5zaG9wcGVyLW15YWNjb3VudC5iYXNrZXRzIHNmY2Muc2hvcHBlci1kaXNjb3Zlcnktc2VhcmNoIGNfc2FsZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cyBzZmNjLnNob3BwZXItY3VzdG9tZXJzLmxvZ2luIGNfcHJvZHVjdCBjX3BheW1lbnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5vcmRlcnMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RsaXN0cyBzZmNjLnNob3BwZXItY3VzdG9tLW9iamVjdHMgc2ZjYy5zaG9wcGVyLXByb21vdGlvbnMgc2ZjYy5zZXNzaW9uX2JyaWRnZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cy5ydyBjX2N1c3RvbWVyIGNfcGF5cGFsX3J3IHNmY2Muc2hvcHBlci1teWFjY291bnQucHJvZHVjdGxpc3RzIHNmY2Muc2hvcHBlci1jYXRlZ29yaWVzIHNmY2Muc2hvcHBlci1teWFjY291bnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RzIHNmY2Muc2hvcHBlci1teWFjY291bnQucncgY19jdXN0b21lckdyb3Vwc19yIGNfc2FsZXNIaXN0b3J5X3Igc2ZjYy5zaG9wcGVyLWNvbnRleHQucncgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzIHNmY2Muc2hvcHBlci1jdXN0b21lcnMucmVnaXN0ZXIgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMucncgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5wcm9kdWN0bGlzdHMucncgY19iYXNrZXQgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzLnJ3IHNmY2Muc2hvcHBlci1naWZ0LWNlcnRpZmljYXRlcyBzZmNjLnNob3BwZXItcHJvZHVjdC1zZWFyY2giLCJzdWIiOiJjYy1zbGFzOjphYWl2X3ByZDo6c2NpZDplYThlYjhjNS0yZWIzLTQ5ZDUtYjY5Yy0yODliYmU0YzA1NjE6OnVzaWQ6MTMyNDc3OTQtMDlmZi00ZWQwLTg2NjctZjk4Mjg2NjZlYzNiIiwiY3R4Ijoic2xhcyIsImlzcyI6InNsYXMvcHJvZC9hYWl2X3ByZCIsImlzdCI6MSwiZG50IjoiMCIsImF1ZCI6ImNvbW1lcmNlY2xvdWQvcHJvZC9hYWl2X3ByZCIsIm5iZiI6MTc2NDIzNzUxMywic3R5IjoiVXNlciIsImlzYiI6InVpZG86c2xhczo6dXBuOkd1ZXN0Ojp1aWRuOkd1ZXN0IFVzZXI6OmdjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OmNoaWQ6QXJpdHppYV9JTlRMIiwiZXhwIjoxNzY0MjM5MzQzLCJpYXQiOjE3NjQyMzc1NDMsImp0aSI6IkMyQy0xMDkwNTQzMTk2MDgyODEyNTAxMTY1NDY3ODg0NjUyOTE5NDYifQ.VYxRuqSVp1E2566lHAoHnAQcAUS2wGtGGjoSQit0a9GIegLLeAF9IqZKdGnaEmP1i2ASQpMFgqSKzeOPAtz9qQ' \
+  -H 'content-type: application/json' \
+  -b '_cfuvid=WXRhBYxK_qK3JFu7YNAlm6K9jlH99m_fkA2o7gUOQBk-1764237539873-0.0.1.1-604800000; cf_clearance=9dz9xyZPRglEJkRblQLq5i4LszoSaJ_IzfQIeX1RAJQ-1764237542-1.2.1.1-fjR9HFS8xk8xMi75PmxM35FxlQkdJOLWakszLQhY27YkXUyVfuQyDSLULwBjMs4M0M4mlIpF4pY.EShkJfm74uzqt6_85_wXniY1GdDr_aq7GvHYecBJCOfksWHDVQ4t06I_mm6iAA_f8PbSH_sMGp1ljOvlGOd_z5nf6QO9Q_nbcQiGpRbZYAtetimGLFcXeszP_EgHlOeP68LNFSnfKmqgvl3W7nvhXuNuOOio9EA; usid_Aritzia_INTL=13247794-09ff-4ed0-8667-f9828666ec3b; cc-nx-g_Aritzia_INTL=dqmYxzAzpaosxyNBqbXS8mtZXC7KTQsMFn5Swaq9CLk; login_id_Aritzia_INTL=Z3Vlc3Q=; AritziaSiteCookie=Aritzia_INTL|intl|default; GlobalE_Full_Redirect=false; GlobalE_Welcome_Data=%7B%22showWelcome%22%3Afalse%7D; GlobalE_Data=%7B%22countryISO%22%3A%22RO%22%2C%22currencyCode%22%3A%22RON%22%2C%22cultureCode%22%3A%22en-GB%22%7D; GlobalE_Analytics=%7B%22merchantId%22%3A1826%2C%22shopperCountryCode%22%3A%22RO%22%2C%22cdn%22%3A%22https%3A%2F%2Fwebservices.global-e.com%2F%22%2C%22clientId%22%3A%224ea3ccbd-bf9c-4837-b4dd-75440c96c3d1%22%2C%22configurations%22%3A%7B%22eventSendingStrategy%22%3A0%7D%2C%22featureToggles%22%3A%7B%22FT_3DA%22%3Afalse%2C%22FT_3DA_UTM_SOURCE_LIST%22%3A%5B%5D%2C%22FT_3DA_STORAGE_LIFETIME%22%3A4320%2C%22FT_BF_GOOGLE_ADS%22%3Afalse%2C%22FT_BF_GOOGLE_ADS_LIFETIME%22%3A30%2C%22isOperatedByGlobalE%22%3Atrue%7D%2C%22dataUpdatedAt%22%3A1764237545585%7D; dwsid=DpA_gGxsqqpWBqZ5Pl91oxDNkbbHLl600Yuo_X17IAdkmyOo_NKkjmLtTKyNhP-1DYZCor6Y5MyVqqX4eeWxXA==; dwanonymous_141aab9245f6d02e82df09aae778ac59=abkrkWlbA1mroRkbJKxGYYxuoU; OptanonAlertBoxClosed=2025-11-27T09:59:07.759Z; _ga=GA1.1.65020421.1764237546; QuantumMetricSessionID=729b715986ca1f373d33a9bccde7e0e3; QuantumMetricUserID=ff933b230f8e8ad84e71a33d9918bf66; __cf_bm=fiRMuCkvEPO_FRPZbIigUgRvwa4UqYxnTzzk1953gxs-1764237550-1.0.1.1-2sAbSBYF0PpGydPnejWOX3wYZsrnEAlQ0OUQAzjVbkZc7n2BL_N28s3Xb1qYDx6630O0Ta1mLr5HXTsvwcoSgaZvcHDHMDzBkVATVBBJ38s; scarab.visitor=%2243A0F33AC695BCBA%22; _gcl_au=1.1.263171074.1764237553; OptanonConsent=isGpcEnabled=0&datestamp=Thu+Nov+27+2025+11%3A59%3A18+GMT%2B0200+(Eastern+European+Standard+Time)&version=202505.1.0&browserGpcFlag=0&isIABGlobal=false&hosts=&consentId=56bf3da0-21e0-477b-ae22-5141e4a117f8&interactionCount=1&isAnonUser=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0003%3A1%2CC0002%3A1%2CC0004%3A1&intType=1&geolocation=RO%3BB&AwaitingReconsent=false; _ga_E6LWQ64Q02=GS2.1.s1764237545$o1$g1$t1764237558$j57$l0$h0; GlobalE_Consent=%7B%22required%22%3Atrue%2C%22groups%22%3A%7B%221%22%3A1%2C%222%22%3A1%2C%223%22%3A1%7D%7D; QuantumMetricEnabled=true; GlobalE_CT_Data=%7B%22CUID%22%3A%7B%22id%22%3A%22825806225.424919385.1826%22%2C%22expirationDate%22%3A%22Thu%2C%2027%20Nov%202025%2010%3A29%3A21%20GMT%22%7D%2C%22CHKCUID%22%3Anull%2C%22GA4SID%22%3A356042154%2C%22GA4TS%22%3A1764237561912%2C%22Domain%22%3A%22www.aritzia.com%22%7D' \
+  -H 'dnt: 1' \
+  -H 'origin: https://www.aritzia.com' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://www.aritzia.com/intl/en/my-account/create-account' \
+  -H 'sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'x-dw-client-id: ea8eb8c5-2eb3-49d5-b69c-289bbe4c0561' \
+  --data-raw '{"customer":{"c_emailpreference":"0","email":"duppy.web@gmail.com","c_recaptchaToken":"0cAFcWeA5SQNGlNl2WiCWeThd9mWup8fgaeI_wdGnRBgEb-ELatyNr_40XhEFTlCAlPYFHef79bOa_PTjqR83RgMY-2Dw3GBUs8WBMpo-VpxWiqAsf_QKyIxc6ySpL4GSyo3YQnYT-G8hyl01BD9NxfDZLGSOUabVh_KaRjC3DUyqTxtx5zYOm_PhK6KALwUc7Wy41WGjWMOVM8bwO164gpsF9MCMRsSbreeILPImGe5EpOVQqrNt7xgDAaX0LhILds3L23Zs2ysgEFLdkUxCxNWxxsXcPKePKDg4ne-xh9q0L1-X0NdyS1CzD_GCmZOgw-weC_PWuyDhHfzeXx7Ws4pzQVII9yHECNnhUqFVRChMahmirA890QxCf2acqCAVwV3ofPUPQ-4ydaPWsEGAF5wcb3QsxcS-qa00QcI7H2XOI9UI7Z0VSDhv2EL9eL84zC_s7YUNLehxqEwlGn8gvY6XP__-f7fSg_PIiRpYuOmldQXbo2HNS9ULkV6OSBSoMi3Fg9O2FGKh-4my1At2CddvkmPdEe0fSSgsJzWyNNq0kPizGSLzobG_cIBVtU_Y9lMzIsf_1vQD8rK1Z0LF8NhOW5W7EMo2BWIy9Umk6vKuRdI1Nq1-XboYdqE6DLkypzcDj9MPM7NBRPQIGKH8Luyb2YALqP10grLjDXZvH6_4egyeOtz7nXtShIv5Ed_GppNyXKrCrknw0Jz9zqlSgverqFbnEs4-TlUXkxzRP6terdApYnPrhyyleH7zXjYzadIK13XFKuabZ","login":"duppy.web@gmail.com","first_name":"Bencsik","last_name":"Oszkar","phone_home":""},"password":"WGV7ug6kx5bqMP$"}'
+
+
+  {
+      "_v": "24.5",
+      "_type": "customer",
+      "_resource_state": "ca49a7cc56967caea63d6b1344976de7ddef4bb746429e3fa5d6e3d9b198ffdf",
+      "auth_type": "registered",
+      "creation_date": "2025-11-27T09:59:28.551Z",
+      "customer_id": "abkrkWlbA1mroRkbJKxGYYxuoU",
+      "customer_no": "9009245052",
+      "email": "duppy.web@gmail.com",
+      "enabled": true,
+      "first_name": "Bencsik",
+      "hashed_login": "a8a81e2c3c46268b00d0b0c5012935e08df5849d8849951c48d3c7f9619e7c16",
+      "last_modified": "2025-11-27T09:59:30.483Z",
+      "last_name": "Oszkar",
+      "login": "duppy.web@gmail.com",
+      "preferred_locale": "default",
+      "c_cdcUID": "a8a81e2c3c46268b00d0b0c5012935e08df5849d8849951c48d3c7f9619e7c16",
+      "c_emailpreference": "0",
+      "c_exportStatus": 2
+  }
+
+
+
+https://www.aritzia.com/api/Aritzia_INTL/ocapi/baskets/e812c7d0b41b26dd007eb6fce6/customer
+
+
+Bearer eyJ2ZXIiOiIxLjAiLCJqa3UiOiJzbGFzL3Byb2QvYWFpdl9wcmQiLCJraWQiOiI5MDI4YmI3Yy1lMTE2LTQ4MDktYjhkOS0wM2RlODhkZWY3NDQiLCJ0eXAiOiJqd3QiLCJjbHYiOiJKMi4zLjQiLCJhbGciOiJFUzI1NiJ9.eyJhdXQiOiJHVUlEIiwic2NwIjoic2ZjYy5zaG9wcGVyLW15YWNjb3VudC5iYXNrZXRzIHNmY2Muc2hvcHBlci1kaXNjb3Zlcnktc2VhcmNoIGNfc2FsZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cyBzZmNjLnNob3BwZXItY3VzdG9tZXJzLmxvZ2luIGNfcHJvZHVjdCBjX3BheW1lbnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5vcmRlcnMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RsaXN0cyBzZmNjLnNob3BwZXItY3VzdG9tLW9iamVjdHMgc2ZjYy5zaG9wcGVyLXByb21vdGlvbnMgc2ZjYy5zZXNzaW9uX2JyaWRnZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cy5ydyBjX2N1c3RvbWVyIGNfcGF5cGFsX3J3IHNmY2Muc2hvcHBlci1teWFjY291bnQucHJvZHVjdGxpc3RzIHNmY2Muc2hvcHBlci1jYXRlZ29yaWVzIHNmY2Muc2hvcHBlci1teWFjY291bnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RzIHNmY2Muc2hvcHBlci1teWFjY291bnQucncgY19jdXN0b21lckdyb3Vwc19yIGNfc2FsZXNIaXN0b3J5X3Igc2ZjYy5zaG9wcGVyLWNvbnRleHQucncgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzIHNmY2Muc2hvcHBlci1jdXN0b21lcnMucmVnaXN0ZXIgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMucncgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5wcm9kdWN0bGlzdHMucncgY19iYXNrZXQgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzLnJ3IHNmY2Muc2hvcHBlci1naWZ0LWNlcnRpZmljYXRlcyBzZmNjLnNob3BwZXItcHJvZHVjdC1zZWFyY2giLCJzdWIiOiJjYy1zbGFzOjphYWl2X3ByZDo6c2NpZDplYThlYjhjNS0yZWIzLTQ5ZDUtYjY5Yy0yODliYmU0YzA1NjE6OnVzaWQ6MTMyNDc3OTQtMDlmZi00ZWQwLTg2NjctZjk4Mjg2NjZlYzNiIiwiY3R4Ijoic2xhcyIsImlzcyI6InNsYXMvcHJvZC9hYWl2X3ByZCIsImlzdCI6MSwiZG50IjoiMCIsImF1ZCI6ImNvbW1lcmNlY2xvdWQvcHJvZC9hYWl2X3ByZCIsIm5iZiI6MTc2NDIzNzU0MSwic3R5IjoiVXNlciIsImlzYiI6InVpZG86ZWNvbTo6dXBuOmR1cHB5LndlYkBnbWFpbC5jb206OnVpZG46QmVuY3NpayBPc3prYXI6OmdjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OnJjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OmNoaWQ6QXJpdHppYV9JTlRMIiwiZXhwIjoxNzY0MjM5MzcxLCJpYXQiOjE3NjQyMzc1NzEsImp0aSI6IkMyQy0xMDkwNTQzMTk2MDgyODEyNTAxMTY1NDY4OTI2MjcwMTkxMDgifQ._Q0hOM1g4zAe0UsgOc9a4KlLGuUUVla4RBctQJsxqahw21Lxctzp2peIvyvnM7sf1BKaZyaEKwihG9AVmrRowA
+
+{
+  "aut": "GUID",
+  "scp": "sfcc.shopper-myaccount.baskets sfcc.shopper-discovery-search c_sale sfcc.shopper-myaccount.paymentinstruments sfcc.shopper-customers.login c_product c_payment sfcc.shopper-myaccount.orders sfcc.shopper-productlists sfcc.shopper-custom-objects sfcc.shopper-promotions sfcc.session_bridge sfcc.shopper-myaccount.paymentinstruments.rw c_customer c_paypal_rw sfcc.shopper-myaccount.productlists sfcc.shopper-categories sfcc.shopper-myaccount sfcc.shopper-myaccount.addresses sfcc.shopper-products sfcc.shopper-myaccount.rw c_customerGroups_r c_salesHistory_r sfcc.shopper-context.rw sfcc.shopper-baskets-orders sfcc.shopper-customers.register sfcc.shopper-myaccount.addresses.rw sfcc.shopper-myaccount.productlists.rw c_basket sfcc.shopper-baskets-orders.rw sfcc.shopper-gift-certificates sfcc.shopper-product-search",
+  "sub": "cc-slas::aaiv_prd::scid:ea8eb8c5-2eb3-49d5-b69c-289bbe4c0561::usid:13247794-09ff-4ed0-8667-f9828666ec3b",
+  "ctx": "slas",
+  "iss": "slas/prod/aaiv_prd",
+  "ist": 1,
+  "dnt": "0",
+  "aud": "commercecloud/prod/aaiv_prd",
+  "nbf": 1764237541,
+  "sty": "User",
+  "isb": "uido:ecom::upn:duppy.web@gmail.com::uidn:Bencsik Oszkar::gcid:abkrkWlbA1mroRkbJKxGYYxuoU::rcid:abkrkWlbA1mroRkbJKxGYYxuoU::chid:Aritzia_INTL",
+  "exp": 1764239371,
+  "iat": 1764237571,
+  "jti": "C2C-109054319608281250116546892627019108"
+}
+
+
+
+
+curl 'https://www.aritzia.com/api/Aritzia_INTL/ocapi/baskets/e812c7d0b41b26dd007eb6fce6/customer' \
+  -H 'accept: */*' \
+  -H 'accept-language: en-US,en;q=0.9,ro;q=0.8' \
+  -H 'atz-mrt-user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'authorization: Bearer eyJ2ZXIiOiIxLjAiLCJqa3UiOiJzbGFzL3Byb2QvYWFpdl9wcmQiLCJraWQiOiI5MDI4YmI3Yy1lMTE2LTQ4MDktYjhkOS0wM2RlODhkZWY3NDQiLCJ0eXAiOiJqd3QiLCJjbHYiOiJKMi4zLjQiLCJhbGciOiJFUzI1NiJ9.eyJhdXQiOiJHVUlEIiwic2NwIjoic2ZjYy5zaG9wcGVyLW15YWNjb3VudC5iYXNrZXRzIHNmY2Muc2hvcHBlci1kaXNjb3Zlcnktc2VhcmNoIGNfc2FsZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cyBzZmNjLnNob3BwZXItY3VzdG9tZXJzLmxvZ2luIGNfcHJvZHVjdCBjX3BheW1lbnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5vcmRlcnMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RsaXN0cyBzZmNjLnNob3BwZXItY3VzdG9tLW9iamVjdHMgc2ZjYy5zaG9wcGVyLXByb21vdGlvbnMgc2ZjYy5zZXNzaW9uX2JyaWRnZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cy5ydyBjX2N1c3RvbWVyIGNfcGF5cGFsX3J3IHNmY2Muc2hvcHBlci1teWFjY291bnQucHJvZHVjdGxpc3RzIHNmY2Muc2hvcHBlci1jYXRlZ29yaWVzIHNmY2Muc2hvcHBlci1teWFjY291bnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RzIHNmY2Muc2hvcHBlci1teWFjY291bnQucncgY19jdXN0b21lckdyb3Vwc19yIGNfc2FsZXNIaXN0b3J5X3Igc2ZjYy5zaG9wcGVyLWNvbnRleHQucncgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzIHNmY2Muc2hvcHBlci1jdXN0b21lcnMucmVnaXN0ZXIgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMucncgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5wcm9kdWN0bGlzdHMucncgY19iYXNrZXQgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzLnJ3IHNmY2Muc2hvcHBlci1naWZ0LWNlcnRpZmljYXRlcyBzZmNjLnNob3BwZXItcHJvZHVjdC1zZWFyY2giLCJzdWIiOiJjYy1zbGFzOjphYWl2X3ByZDo6c2NpZDplYThlYjhjNS0yZWIzLTQ5ZDUtYjY5Yy0yODliYmU0YzA1NjE6OnVzaWQ6MTMyNDc3OTQtMDlmZi00ZWQwLTg2NjctZjk4Mjg2NjZlYzNiIiwiY3R4Ijoic2xhcyIsImlzcyI6InNsYXMvcHJvZC9hYWl2X3ByZCIsImlzdCI6MSwiZG50IjoiMCIsImF1ZCI6ImNvbW1lcmNlY2xvdWQvcHJvZC9hYWl2X3ByZCIsIm5iZiI6MTc2NDIzNzU0MSwic3R5IjoiVXNlciIsImlzYiI6InVpZG86ZWNvbTo6dXBuOmR1cHB5LndlYkBnbWFpbC5jb206OnVpZG46QmVuY3NpayBPc3prYXI6OmdjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OnJjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OmNoaWQ6QXJpdHppYV9JTlRMIiwiZXhwIjoxNzY0MjM5MzcxLCJpYXQiOjE3NjQyMzc1NzEsImp0aSI6IkMyQy0xMDkwNTQzMTk2MDgyODEyNTAxMTY1NDY4OTI2MjcwMTkxMDgifQ._Q0hOM1g4zAe0UsgOc9a4KlLGuUUVla4RBctQJsxqahw21Lxctzp2peIvyvnM7sf1BKaZyaEKwihG9AVmrRowA' \
+  -H 'content-type: application/json' \
+  -b '_cfuvid=WXRhBYxK_qK3JFu7YNAlm6K9jlH99m_fkA2o7gUOQBk-1764237539873-0.0.1.1-604800000; cf_clearance=9dz9xyZPRglEJkRblQLq5i4LszoSaJ_IzfQIeX1RAJQ-1764237542-1.2.1.1-fjR9HFS8xk8xMi75PmxM35FxlQkdJOLWakszLQhY27YkXUyVfuQyDSLULwBjMs4M0M4mlIpF4pY.EShkJfm74uzqt6_85_wXniY1GdDr_aq7GvHYecBJCOfksWHDVQ4t06I_mm6iAA_f8PbSH_sMGp1ljOvlGOd_z5nf6QO9Q_nbcQiGpRbZYAtetimGLFcXeszP_EgHlOeP68LNFSnfKmqgvl3W7nvhXuNuOOio9EA; usid_Aritzia_INTL=13247794-09ff-4ed0-8667-f9828666ec3b; AritziaSiteCookie=Aritzia_INTL|intl|default; GlobalE_Full_Redirect=false; GlobalE_Welcome_Data=%7B%22showWelcome%22%3Afalse%7D; GlobalE_Data=%7B%22countryISO%22%3A%22RO%22%2C%22currencyCode%22%3A%22RON%22%2C%22cultureCode%22%3A%22en-GB%22%7D; GlobalE_Analytics=%7B%22merchantId%22%3A1826%2C%22shopperCountryCode%22%3A%22RO%22%2C%22cdn%22%3A%22https%3A%2F%2Fwebservices.global-e.com%2F%22%2C%22clientId%22%3A%224ea3ccbd-bf9c-4837-b4dd-75440c96c3d1%22%2C%22configurations%22%3A%7B%22eventSendingStrategy%22%3A0%7D%2C%22featureToggles%22%3A%7B%22FT_3DA%22%3Afalse%2C%22FT_3DA_UTM_SOURCE_LIST%22%3A%5B%5D%2C%22FT_3DA_STORAGE_LIFETIME%22%3A4320%2C%22FT_BF_GOOGLE_ADS%22%3Afalse%2C%22FT_BF_GOOGLE_ADS_LIFETIME%22%3A30%2C%22isOperatedByGlobalE%22%3Atrue%7D%2C%22dataUpdatedAt%22%3A1764237545585%7D; dwsid=DpA_gGxsqqpWBqZ5Pl91oxDNkbbHLl600Yuo_X17IAdkmyOo_NKkjmLtTKyNhP-1DYZCor6Y5MyVqqX4eeWxXA==; dwanonymous_141aab9245f6d02e82df09aae778ac59=abkrkWlbA1mroRkbJKxGYYxuoU; OptanonAlertBoxClosed=2025-11-27T09:59:07.759Z; _ga=GA1.1.65020421.1764237546; QuantumMetricSessionID=729b715986ca1f373d33a9bccde7e0e3; QuantumMetricUserID=ff933b230f8e8ad84e71a33d9918bf66; __cf_bm=fiRMuCkvEPO_FRPZbIigUgRvwa4UqYxnTzzk1953gxs-1764237550-1.0.1.1-2sAbSBYF0PpGydPnejWOX3wYZsrnEAlQ0OUQAzjVbkZc7n2BL_N28s3Xb1qYDx6630O0Ta1mLr5HXTsvwcoSgaZvcHDHMDzBkVATVBBJ38s; scarab.visitor=%2243A0F33AC695BCBA%22; _gcl_au=1.1.263171074.1764237553; OptanonConsent=isGpcEnabled=0&datestamp=Thu+Nov+27+2025+11%3A59%3A18+GMT%2B0200+(Eastern+European+Standard+Time)&version=202505.1.0&browserGpcFlag=0&isIABGlobal=false&hosts=&consentId=56bf3da0-21e0-477b-ae22-5141e4a117f8&interactionCount=1&isAnonUser=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0003%3A1%2CC0002%3A1%2CC0004%3A1&intType=1&geolocation=RO%3BB&AwaitingReconsent=false; _ga_E6LWQ64Q02=GS2.1.s1764237545$o1$g1$t1764237558$j57$l0$h0; GlobalE_Consent=%7B%22required%22%3Atrue%2C%22groups%22%3A%7B%221%22%3A1%2C%222%22%3A1%2C%223%22%3A1%7D%7D; QuantumMetricEnabled=true; GlobalE_CT_Data=%7B%22CUID%22%3A%7B%22id%22%3A%22825806225.424919385.1826%22%2C%22expirationDate%22%3A%22Thu%2C%2027%20Nov%202025%2010%3A29%3A21%20GMT%22%7D%2C%22CHKCUID%22%3Anull%2C%22GA4SID%22%3A356042154%2C%22GA4TS%22%3A1764237561912%2C%22Domain%22%3A%22www.aritzia.com%22%7D; cc-nx_Aritzia_INTL=yTCKuyXn0ZNSL-dseDZ9WC7sr7yWH-J8sNaImHwgnAg; login_id_Aritzia_INTL=ZHVwcHkud2ViQGdtYWlsLmNvbQ==; cache_key_Aritzia_INTL=' \
+  -H 'dnt: 1' \
+  -H 'origin: https://www.aritzia.com' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://www.aritzia.com/intl/en/home' \
+  -H 'sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'x-dw-client-id: ea8eb8c5-2eb3-49d5-b69c-289bbe4c0561' \
+  -H 'x-dw-http-method-override: PUT' \
+  --data-raw '{"email":"duppy.web@gmail.com"}'
+
+
+
+
+
+uido:ecom::upn:duppy.web@gmail.com::uidn:Bencsik Oszkar::gcid:abkrkWlbA1mroRkbJKxGYYxuoU::rcid:abkrkWlbA1mroRkbJKxGYYxuoU::chid:Aritzia_INTL
+
+  access_token
+  :
+  "eyJ2ZXIiOiIxLjAiLCJqa3UiOiJzbGFzL3Byb2QvYWFpdl9wcmQiLCJraWQiOiI5MDI4YmI3Yy1lMTE2LTQ4MDktYjhkOS0wM2RlODhkZWY3NDQiLCJ0eXAiOiJqd3QiLCJjbHYiOiJKMi4zLjQiLCJhbGciOiJFUzI1NiJ9.eyJhdXQiOiJHVUlEIiwic2NwIjoic2ZjYy5zaG9wcGVyLW15YWNjb3VudC5iYXNrZXRzIHNmY2Muc2hvcHBlci1kaXNjb3Zlcnktc2VhcmNoIGNfc2FsZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cyBzZmNjLnNob3BwZXItY3VzdG9tZXJzLmxvZ2luIGNfcHJvZHVjdCBjX3BheW1lbnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5vcmRlcnMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RsaXN0cyBzZmNjLnNob3BwZXItY3VzdG9tLW9iamVjdHMgc2ZjYy5zaG9wcGVyLXByb21vdGlvbnMgc2ZjYy5zZXNzaW9uX2JyaWRnZSBzZmNjLnNob3BwZXItbXlhY2NvdW50LnBheW1lbnRpbnN0cnVtZW50cy5ydyBjX2N1c3RvbWVyIGNfcGF5cGFsX3J3IHNmY2Muc2hvcHBlci1teWFjY291bnQucHJvZHVjdGxpc3RzIHNmY2Muc2hvcHBlci1jYXRlZ29yaWVzIHNmY2Muc2hvcHBlci1teWFjY291bnQgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMgc2ZjYy5zaG9wcGVyLXByb2R1Y3RzIHNmY2Muc2hvcHBlci1teWFjY291bnQucncgY19jdXN0b21lckdyb3Vwc19yIGNfc2FsZXNIaXN0b3J5X3Igc2ZjYy5zaG9wcGVyLWNvbnRleHQucncgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzIHNmY2Muc2hvcHBlci1jdXN0b21lcnMucmVnaXN0ZXIgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5hZGRyZXNzZXMucncgc2ZjYy5zaG9wcGVyLW15YWNjb3VudC5wcm9kdWN0bGlzdHMucncgY19iYXNrZXQgc2ZjYy5zaG9wcGVyLWJhc2tldHMtb3JkZXJzLnJ3IHNmY2Muc2hvcHBlci1naWZ0LWNlcnRpZmljYXRlcyBzZmNjLnNob3BwZXItcHJvZHVjdC1zZWFyY2giLCJzdWIiOiJjYy1zbGFzOjphYWl2X3ByZDo6c2NpZDplYThlYjhjNS0yZWIzLTQ5ZDUtYjY5Yy0yODliYmU0YzA1NjE6OnVzaWQ6MTMyNDc3OTQtMDlmZi00ZWQwLTg2NjctZjk4Mjg2NjZlYzNiIiwiY3R4Ijoic2xhcyIsImlzcyI6InNsYXMvcHJvZC9hYWl2X3ByZCIsImlzdCI6MSwiZG50IjoiMCIsImF1ZCI6ImNvbW1lcmNlY2xvdWQvcHJvZC9hYWl2X3ByZCIsIm5iZiI6MTc2NDIzNzU0MSwic3R5IjoiVXNlciIsImlzYiI6InVpZG86ZWNvbTo6dXBuOmR1cHB5LndlYkBnbWFpbC5jb206OnVpZG46QmVuY3NpayBPc3prYXI6OmdjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OnJjaWQ6YWJrcmtXbGJBMW1yb1JrYkpLeEdZWXh1b1U6OmNoaWQ6QXJpdHppYV9JTlRMIiwiZXhwIjoxNzY0MjM5MzcxLCJpYXQiOjE3NjQyMzc1NzEsImp0aSI6IkMyQy0xMDkwNTQzMTk2MDgyODEyNTAxMTY1NDY4OTI2MjcwMTkxMDgifQ._Q0hOM1g4zAe0UsgOc9a4KlLGuUUVla4RBctQJsxqahw21Lxctzp2peIvyvnM7sf1BKaZyaEKwihG9AVmrRowA"
+  customer_id
+  :
+  "abkrkWlbA1mroRkbJKxGYYxuoU"
+  dnt
+  :
+  "0"
+  enc_user_id
+  :
+  "afbfff1a12c53cc5fa2cc978ffdfb126"
+  expires_in
+  :
+  1800
+  id_token
+  :
+  "eyJraWQiOiI3MTUxNmI0My1lNzBkLTQ5NDktYjhmNy00NTdkM2JmMjY2ZjMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjYy1zbGFzOjphYWl2X3ByZDo6c2NpZDplYThlYjhjNS0yZWIzLTQ5ZDUtYjY5Yy0yODliYmU0YzA1NjE6OnVzaWQ6MTMyNDc3OTQtMDlmZi00ZWQwLTg2NjctZjk4Mjg2NjZlYzNiIiwiYXVkIjoiZWE4ZWI4YzUtMmViMy00OWQ1LWI2OWMtMjg5YmJlNGMwNTYxIiwiaXNzIjoicHJkLnVzLnNob3BwZXIuY2Muc2FsZXNmb3JjZS5jb20iLCJuYW1lIjoiZWNvbSIsImV4cCI6MTc2NDIzOTM3MSwiaWF0IjoxNzY0MjM3NTcxLCJlbWFpbCI6ImVjb20ifQ.dzJsAUZc_dxpMBpt_IsTUxkfd27HA-f5ZVJpsi_7A1WXvHhrtCaV9CEZ5JX-HOwRRJhAmOPkbY_cQfroXDyg5IG8nfkdEgVVeZac6Au4AMT9QDk_eReH6QkSBsOiO9IcoIjzjs9bPm8-Ab2hC7hkDv0XnnXiP3hdGJ6lDAg4vPmf5xfb6K9Z0NwgRcBkazWUIOoxS_23HVu6ivWDkHZo2IaR5LUSLBAPrCoJpy5bVVzGBsK_83MWk_x5YXReAAbpocQkxIW78mqG7Pa15YziIRML2_bfrz8tpnb0NfBnMHVg3q3CLx5fhP7SmoGVycx8XjBKrwFvfhlNG8g7wuzOaQ"
+  idp_access_token
+  :
+  "Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6IjE3NjA3NzQ4MjU0MTUiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJlYThlYjhjNS0yZWIzLTQ5ZDUtYjY5Yy0yODliYmU0YzA1NjEiLCJleHAiOjE3NjQyMzkzNzEsImlhdCI6MTc2NDIzNzU3MSwiaXNzIjoiY29tbWVyY2VjbG91ZC9wcm9kdWN0aW9uL2FhaXZwcmQiLCJzY29wZSI6W10sInN1YiI6IntcIkN1c3RvbWVySW5mb1wiOntcImN1c3RvbWVySWRcIjpcImFia3JrV2xiQTFtcm9Sa2JKS3hHWVl4dW9VXCIsXCJndWVzdFwiOmZhbHNlLFwidmlzaXRJZFwiOlwiNGQwZTZiNjc3YTc3ZjQ4NjVjMWI1YzFkYzdcIn19In0.02e8ucZnifnr2hqdN1uWuRqgnCZryUlq1x54I8qszmo2LKaoKoh3aOkzZJH0H30_zI5Edbx7jDqMx0czUMG2lw"
+  idp_refresh_token
+  :
+  ""
+  refresh_token
+  :
+  "yTCKuyXn0ZNSL-dseDZ9WC7sr7yWH-J8sNaImHwgnAg"
+  refresh_token_expires_in
+  :
+  7776000
+  token_type
+  :
+  "BEARER"
+  usid
+  :
+  "13247794-09ff-4ed0-8667-f9828666ec3b"
+
+
+
+
+
+  rhipmjknunbajlyidf@nespfxxxx.com
+

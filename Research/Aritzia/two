@@ -1,0 +1,109 @@
+{
+    "_v": "24.5",
+    "_type": "basket",
+    "_resource_state": "232e76afc32ae4a45c8708f481e16cca54d54c2ddfce91c1da9426de1a0db7d4",
+    "_flash": [
+        {
+            "_type": "flash",
+            "type": "ProductItemsRequired",
+            "message": "Product items are required.",
+            "path": "$.product_items"
+        },
+        {
+            "_type": "flash",
+            "type": "PaymentMethodRequired",
+            "message": "No payment method ID was specified. Please provide a valid payment method ID.",
+            "path": "$.payment_instruments[0].payment_method_id"
+        },
+        {
+            "_type": "flash",
+            "type": "BillingAddressRequired",
+            "message": "No billing address was specified. Please provide a valid billing address.",
+            "path": "$.billing_address"
+        },
+        {
+            "_type": "flash",
+            "type": "ShippingAddressRequired",
+            "message": "No shipping address was specified. Please provide a valid shipping address.",
+            "path": "$.shipments[0].shipping_address",
+            "details": {
+                "shipmentId": "me"
+            }
+        }
+    ],
+    "adjusted_merchandize_total_tax": 0,
+    "adjusted_shipping_total_tax": 0,
+    "agent_basket": false,
+    "basket_id": "e812c7d0b41b26dd007eb6fce6",
+    "channel_type": "storefront",
+    "creation_date": "2025-11-27T09:59:05.283Z",
+    "currency": "USD",
+    "customer_info": {
+        "_type": "customer_info",
+        "customer_id": "abkrkWlbA1mroRkbJKxGYYxuoU",
+        "customer_no": "9009245052",
+        "email": "rhipmjknunbajlyidf@nespf.com"
+    },
+    "last_modified": "2025-11-27T10:23:19.201Z",
+    "merchandize_total_tax": 0,
+    "notes": {
+        "_type": "simple_link",
+        "link": "https://www.aritzia.com/s/Aritzia_INTL/dw/shop/v24_5/baskets/e812c7d0b41b26dd007eb6fce6/notes?c_ip=159.26.117.112"
+    },
+    "order_total": 0,
+    "product_sub_total": 0,
+    "product_total": 0,
+    "shipments": [
+        {
+            "_type": "shipment",
+            "adjusted_merchandize_total_tax": 0,
+            "adjusted_shipping_total_tax": 0,
+            "gift": false,
+            "merchandize_total_tax": 0,
+            "product_sub_total": 0,
+            "product_total": 0,
+            "shipment_id": "me",
+            "shipment_total": 0,
+            "shipping_method": {
+                "_type": "shipping_method",
+                "description": "Global-e Standard Shipping",
+                "id": "GLOBALE_STANDARD",
+                "name": "GLOBALE STANDARD",
+                "price": 0.01,
+                "c_altStyle": false,
+                "c_geProductID": "60689",
+                "c_isGeShippingMethod": true,
+                "c_merchandiseCategory": "EXEMPT",
+                "c_shippingCode": "I3"
+            },
+            "shipping_status": "not_shipped",
+            "shipping_total": 0,
+            "shipping_total_tax": 0,
+            "tax_total": 0
+        }
+    ],
+    "shipping_items": [
+        {
+            "_type": "shipping_item",
+            "adjusted_tax": 0,
+            "base_price": 0,
+            "item_id": "19173472b8c736923156ce0882",
+            "item_text": "Shipping",
+            "price": 0,
+            "price_after_item_discount": 0,
+            "shipment_id": "me",
+            "tax": 0,
+            "tax_basis": 0,
+            "tax_class_id": "CustomRate",
+            "tax_rate": 0
+        }
+    ],
+    "shipping_total": 0,
+    "shipping_total_tax": 0,
+    "taxation": "net",
+    "tax_rounded_at_group": false,
+    "tax_total": 0,
+    "temporary_basket": false,
+    "c_totalListPrice": 0,
+    "c_transferredFromAgent": false
+}

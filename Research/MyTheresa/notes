@@ -1,0 +1,95 @@
+Register
+
+User ID is in the token
+
+{
+  "iat": 1764268769,
+  "exp": 1764355169,
+  "roles": [
+    "ROLE_USER"
+  ],
+  "externalCustomerNumber": 13826651,
+  "customerId": 7 813 457,
+  "version": 1764268769,
+  "id": 6635782
+}
+
+curl 'https://api.mytheresa.com/api' \
+  -H 'accept: */*' \
+  -H 'accept-language: en' \
+  -H 'content-type: text/plain;charset=UTF-8' \
+  -H 'dnt: 1' \
+  -H 'origin: https://www.mytheresa.com' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://www.mytheresa.com/' \
+  -H 'sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-site' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' \
+  -H 'x-country: RO' \
+  -H 'x-geo: RO' \
+  -H 'x-nsu: false' \
+  -H 'x-region: BY' \
+  -H 'x-section: default' \
+  -H 'x-shield: P1_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.haJwZACjZXhwzmkom1incGFzc2tlecUEamb83RpyqMeKsDnt1MxfLL67yBDfPbDHtZS6fXklJ7dalfXXYywyQUdhYapF40STFNYqEbhzqbFpKqYr7u5bfKXxQyldVO9Au1U-sMAyjBgxPi5WR41zoGyL6yNvkxAtWyYtYeEkUqdZij6TubAFMhTtkkQc8wANpkEPPFeiQfBjwLV8WFEcA9rd8xYvkMiP9YX3ilSYJlpbwRhGAy35DoEwAZGKcWAvOwreLywEVlLNUsyIiSuKI59Rpx5xoJdIUEXy7HxAhfz9jMpLCaeaJV1FrqRsLFO-8ryeLgow8jSaSRMaZpFVsi56UiIqY35JQa5J_6-y9HrhM1JGO9orTlUeaJqh0k3H_kxlnVm5e18IQGYOysFDvMXuROIwgRfc1hLhto2FwwtxNyhs0knE5I2LNr3FQp5Bko5i5rFgy2xJEgR2m9_kBNgQere1J5f-QX8uulpi1HmSpX2f0QJ0rwQp-3sKAbEd41KHuUgWTxYF7j31YnMh37aoLiXyFOSRJPBH3pxeqJgkVNBjG6CSM6cqM5wiKjrvB_PTvZSU5CMvmUgZYrdeCwS1Ca4cMokuQ6rb3YQyrTIm_vnrVCYFxmepOsC2GMiWUthfA-rRBGMuP9TQyx29RKTcUOHV933cwSFXlLxK6_QqCCaznoWxgmLers4w6Ahs-j9SM7AUBigmXdFOv9fZa7AoqnLebQZyxzRfNFxZwFfKpkU-hcYcL0pdxy4dUYSldiRDIXZzeuTS_GHTKCrvnqh3xotiZNoaMBoPP1N68RPloHlOG95O98HZw7F7KHQI_byjZjqCWf7Y40RjLsS1xHUc18doXIs-h3EftT4UlJwpjlGQV8JymHhHoEAF_epopCYD9VQne59DHRd9Soe5z8a3OJeMUHprU0kd63p8y-jhvDh1yA0Ii_DYBHAb376ofV1tYmzveID0lWj8peLMblRRCHAVs7GeNe8dvO4h9FzO9kUhvHOVcCQqnwHYAV1Oj3SB_dCGphKxtA4fefrC2jjBykZINdEektBU_0kLGwoixyxnCOa_utaRftMNY4b6_oP8-7H7qJtVDV56LeYW2DA01DJmPevZTrnnOJJwyOZx-9f_p8UmJdM2f-6H2b6D3HiewanVwQ977_OFwLIUxs60meTwM6QygntFxTpHsk1yTW-2ixwoZAq_CkIzPzTLcyl68uE22xqUEoaNOeh7H9uKABQqHpFaCBrkEjqf5PapdQUBkw4DmK8obpRyabOwiRRzHFVRCJPa_1DJ6qAIrV4oJyt2SldOoFC-L4CQMZsrevzcmGZjWPj82K_Hp59G5GrpjZi5A97S0tzmhHtBf0nFaJfIJSuvRWMuv7Jw_aDfRDx04STwnU4fAKrOfzMZVjmRgz-VDTaBvPSlu7G5ydGVOexzMxKMry6L0BA1lNhixGe84P2j982I1g3D9qdecxTZFyU9JLa6etlQL0kTlY-LxJNFEpMEcFGlbJQ_cJfp5niaDx4id_5yuFFeH0deBpSjomtyqDQ0NDdmOTlkqHNoYXJkX2lkzhQ8hB8.FBjy50LOxdUyK-Ce_R-fq2C89KyoMbzm9ixg180PPJU' \
+  -H 'x-store: EURO' \
+  -H 'x-tracking-variables: analyticsId=null,atom_plp_pageview_share_ww=1,atom_plp_pageview_share_mw=0,atom_plp_pageview_share_kw=0,atom_plp_pageview_share_lf=0,browser=Chrome,browserLanguage=en,campaign=google_sea,channel=en-euro,channel_country=RO,channel_language=en,countOfPageViews=3,countOfSessions=1,cdf=000,csf=000,cdf_1=0,cdf_2=0,cdf_3=0,csf_1=0,csf_2=0,csf_3=0,storeCreditBalance=0,department=women,devicePlatform=web,deviceSystem=macOS,deviceType=desktop,emailHash=unknown,environment=production,geo_country=RO,geo_city=BUCHAREST,geo_region=unknown,geo_timezone=GMT 2,ipAddress=159.26.117.73,loggedStatus=false,mytuuid=79c15368-e15a-499d-8465-4448d7ec775c,pageId=ACCOUNT_REGISTRATION_PAGE,pageType=account,referral=www.google.com,sessionId=undefined,source=sea_pla,url=https://www.mytheresa.com/euro/en/account/registration,version=5.2.1,experience_globalBlue_closed=false,experience_crosslinkingHeader_crosslinking_outreach_finestedit_a_seen=true,experience_pocketBanner1_pocketBanner1_seen=false,experience_pocketBanner2_pocketBanner2_seen=false,experience_topLevelBanner_tlb_ww_sale_50_seen=true,monetateId=5.1802252041.1764268551467' \
+  --data-raw $'{"query":"mutation XRegisterUser($anonymousCartId: String, $anonymousWishlistId: String, $firstName: String\u0021, $lastName: String\u0021, $email: String\u0021, $password: String\u0021, $phoneNumber: String\u0021, $academicTitle: String, $subscribedToNewsletter: Boolean, $salutation: String, $section: String\u0021) {\\n  xRegisterUser(anonymousWishlistId: $anonymousWishlistId, anonymousCartId: $anonymousCartId, firstName: $firstName, lastName: $lastName, email: $email, password: $password, phoneNumber: $phoneNumber, subscribedToNewsletter: $subscribedToNewsletter, academicTitle: $academicTitle, salutation: $salutation, section: $section) {\\n    success\\n    authenticationData {\\n      token\\n      wishlistId\\n      cartId\\n      refreshToken\\n      tokenExpiresIn\\n      refreshTokenExpiresIn\\n      customerData {\\n        ...customerData\\n      }\\n    }\\n  }\\n}\\n\\nfragment customerData on XCustomer {\\n  academicTitle\\n  customerInformation {\\n    accountCreationChannel\\n    adyenCustomerRef\\n    customerFlags {\\n      cdf\\n      csf\\n    }\\n    customerReturnsGroup\\n    freeShippingCount\\n    isPrive\\n    wishlistNotifications\\n  }\\n  defaultAddress\\n  email\\n  emailHash\\n  externalCustomerId\\n  externalCustomerNumber\\n  firstName\\n  fullName\\n  group {\\n    code\\n    name\\n  }\\n  lastName\\n  birthday\\n  loyaltyPointsAccount\\n  middleName\\n  phoneNumber\\n  storeCreditBalance {\\n    amount\\n    currencyCode\\n  }\\n  verifiedUser\\n  salutation\\n  subscribedToNewsletter\\n  personalShopper {\\n    name\\n    phone\\n    email\\n  }\\n}\\n","variables":{"subscribeToSMS":false,"academicTitle":"","email":"duppy.web@gmail.com","firstName":"Bencsik","lastName":"Oszkar","password":"\u0021vDR\u0021kfcNDFB2r8","phoneNumber":"","salutation":"mrs","subscribedToNewsletter":true,"anonymousCartId":null,"anonymousWishlistId":null,"section":"women"}}'
+
+{
+    "data": {
+        "xRegisterUser": {
+            "authenticationData": {
+                "cartId": "6ded945f-5090-4b1d-b999-b4b40db50741",
+                "customerData": {
+                    "academicTitle": "not",
+                    "birthday": "",
+                    "customerInformation": {
+                        "accountCreationChannel": "",
+                        "adyenCustomerRef": "",
+                        "customerFlags": {
+                            "cdf": "unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown|unknown",
+                            "csf": "00000000"
+                        },
+                        "customerReturnsGroup": "",
+                        "freeShippingCount": "0",
+                        "isPrive": false,
+                        "wishlistNotifications": true
+                    },
+                    "defaultAddress": "",
+                    "email": "duppy.web@gmail.com",
+                    "emailHash": "037cc437a6a013a1e438740b94f60c00",
+                    "externalCustomerId": 12726651,
+                    "externalCustomerNumber": 13826651,
+                    "firstName": "Bencsik",
+                    "fullName": "Bencsik Oszkar",
+                    "group": {
+                        "code": "STANDARD",
+                        "name": "STANDARD"
+                    },
+                    "lastName": "Oszkar",
+                    "loyaltyPointsAccount": "",
+                    "middleName": "",
+                    "personalShopper": null,
+                    "phoneNumber": "",
+                    "salutation": "mrs",
+                    "storeCreditBalance": {
+                        "amount": 0,
+                        "currencyCode": "EUR"
+                    },
+                    "subscribedToNewsletter": false,
+                    "verifiedUser": false
+                },
+                "refreshToken": "aea88e2913efb2956da2bf5b084925ff30d1cf03d970abb41a229040e167fa0d6650d2b4fbcb5b548dc83f0bfcedcf3765564cfac9078861bfee3d7c28c2dcf7",
+                "refreshTokenExpiresIn": 2592000,
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NjQyNjg3NjksImV4cCI6MTc2NDM1NTE2OSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImV4dGVybmFsQ3VzdG9tZXJOdW1iZXIiOjEzODI2NjUxLCJjdXN0b21lcklkIjo3ODEzNDU3LCJ2ZXJzaW9uIjoxNzY0MjY4NzY5LCJpZCI6NjYzNTc4Mn0.X9jlMJ8gRBlzg_Ei00wH_Xr8arCP9B5_DEqlVMxEGPNZTk88tSiScbH6PEHWFtmCiXY29b1bkSOCIg53d4xil3NigqYLda607FU-GOCftecgg0SQg43mmyShM7q085XZPXre0QYxROad0P1YsqdK09-8lloxlmTkxiYDQDwEr9cL2td0O23xJobnKReR_KpeZPWYvQEhG6pEjOdZbL0UDAJwoXcNhsAFRF6zNpxP7eEP-ZZV9eeARuttghp9HJ7vkRc_WM0VgsP-B-Qp3DrqYIdnuuqON4akQYeMx5jH-nx8ZOvJk17Uw3TJMQpFkS6DLaQB5Bc3pk70oC6PgKDJaTj7jTwHyQ0utjE5rOUAyCjzKMw2UcdcpYD_PK7R2RU50oukcQq1PTHJgOJytZD17AnK4a08CvdF3NQ9JleLrjvYKSFmA42eZxJFkipU6yyhQ9gXnnkPLa7eAabSeXb5vJq0hQB2kOIkKzQMzirOs1TrzSFMBGN0W7dF8aflRiaDbmo9PG7BpR0JN1t9DcW-1XZ2PSr1vjGGcf0CFTuam6c6sV0RAvzrqj3bYFGFNkFP28fWkJPGs5yRz4CPyhwZkMkLc6-estyO9PYheTGOdtIoIXkKFdQ64nPR0UEEp1zfAIIJymwhu6VSCLC9cgvgkZ1EWJXqwkb_nAV5U7xmv1s",
+                "tokenExpiresIn": 86400,
+                "wishlistId": "00f9170a-4a7d-4f25-9bac-684dde4b344b"
+            },
+            "success": true
+        }
+    }
+}
