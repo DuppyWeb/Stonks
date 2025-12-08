@@ -1,3 +1,6 @@
 .idea
 Crawlers/package-lock.json
 Crawlers/*/node_modules
+Crawlers/screenshots/
+Crawlers/jsons/
+
