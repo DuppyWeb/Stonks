@@ -4,15 +4,20 @@ const fs = require('fs').promises;
 const path = require('path');
 const { TempMail } = require('tempmail.lol');
 const { faker } = require('@faker-js/faker');
+const Crawl = require('./crawl.class');
 
 class BaseCrawler {
     constructor(options = {}) {
-        this.debugUrl = 'ws://127.0.0.1:9222/devtools/browser/f0b0ee0c-996f-4e37-bedb-307f79716e1f';
+        this.debugUrl = 'http://127.0.0.1:9222';
         this.browser = null;
+        this.incognitoContext = null; // Incognito browser context
+        this.useIncognito = options.useIncognito !== undefined ? options.useIncognito : true; // Use incognito by default
         this.pages = new Map(); // Map of domain -> page
         this.capturedRequests = [];
         this.capturePatterns = [];
-        this.tempmail = new TempMail(); // Initialize TempMail client
+        this.tempmail = new TempMail('tempmail.20251208.fm1wy3t334e7or288wqdoa45fbl0nd692nhzvepwx2e6l7ym'); // Initialize TempMail client
+        this.emailDomains =  ["0xff.fit", "ruhanemuk.fit", "chlotesxxl.online", "ruhanemuk.online", "ruhanemuk.space", "ruhanemuk.store", "chlotesxxl.xyz"];
+        
         
         // Proxy configuration
         this.proxy = {
@@ -25,6 +30,11 @@ class BaseCrawler {
         
         // Track if browser was launched (vs connected)
         this.browserLaunched = false;
+        
+        // Crawl tracking
+        this.crawl = null;
+        this.crawlerName = options.crawlerName || 'unknown';
+        this.dbPath = options.dbPath || './crawls.sqlite';
     }
 
     /**
@@ -67,12 +77,25 @@ class BaseCrawler {
      */
     async connect() {
         try {
-            const browserWSEndpoint = this.debugUrl;
+            // Fetch the WebSocket endpoint from Chrome DevTools
+            const response = await fetch(`${this.debugUrl}/json/version`);
+            const data = await response.json();
+            const browserWSEndpoint = data.webSocketDebuggerUrl;
+            
+            console.log(`Detected WebSocket endpoint: ${browserWSEndpoint}`);
+            
             this.browser = await puppeteer.connect({
                 browserWSEndpoint,
                 defaultViewport: null
             });
-            console.log('Connected to Chromium');
+            
+            // Create incognito browser context if enabled (works for connected browsers)
+            if (this.useIncognito) {
+                this.incognitoContext = await this.browser.createBrowserContext();
+                console.log('Connected to Chromium with incognito context');
+            } else {
+                console.log('Connected to Chromium (no incognito context)');
+            }
             
             // Note: When connecting to existing browser, proxy must be configured at browser launch
             if (this.proxy.enabled) {
@@ -84,6 +107,124 @@ class BaseCrawler {
             return this.browser;
         } catch (error) {
             throw new Error(`Failed to connect to Chromium: ${error.message}`);
+        }
+    }
+
+    /**
+     * Start crawl tracking
+     * @param {Object} options - Optional crawl options (userData, accountId, etc.)
+     * @returns {Promise<number>} - Crawl ID
+     */
+    async startCrawl(options = {}) {
+        this.crawl = new Crawl(this.crawlerName, {
+            ...options,
+            dbPath: this.dbPath
+        });
+        await this.crawl.initDatabase();
+        const crawlId = await this.crawl.save();
+        this.crawl.addLog(`Crawl started: ${this.crawlerName}`);
+        console.log(`Crawl tracking started for: ${this.crawlerName} (ID: ${crawlId})`);
+        return crawlId;
+    }
+
+    /**
+     * Stop crawl tracking and mark as completed
+     */
+    async stopCrawl() {
+        if (this.crawl) {
+            await this.crawl.complete();
+            await this.crawl.closeDatabase();
+            console.log('Crawl tracking stopped');
+        }
+    }
+
+    /**
+     * Mark crawl as failed
+     */
+    async failCrawl(error) {
+        if (this.crawl) {
+            await this.crawl.fail(error);
+            await this.crawl.closeDatabase();
+            console.log('Crawl marked as failed');
+        }
+    }
+
+    /**
+     * Set account ID for the current crawl
+     * @param {string} accountId - Account ID to set
+     * @returns {Promise<void>}
+     */
+    async setAccountId(accountId) {
+        if (this.crawl) {
+            await this.crawl.setAccountId(accountId);
+        } else {
+            console.warn('No active crawl to set account ID');
+        }
+    }
+
+    /**
+     * Set order ID for the current crawl
+     * @param {string} orderId - Order ID to set
+     * @returns {Promise<void>}
+     */
+    async setOrderId(orderId) {
+        if (this.crawl) {
+            await this.crawl.setOrderId(orderId);
+        } else {
+            console.warn('No active crawl to set order ID');
+        }
+    }
+
+    /**
+     * Set cart ID for the current crawl
+     * @param {string} cartId - Cart ID to set
+     * @returns {Promise<void>}
+     */
+    async setCartId(cartId) {
+        if (this.crawl) {
+            await this.crawl.setCartId(cartId);
+        } else {
+            console.warn('No active crawl to set cart ID');
+        }
+    }
+
+    /**
+     * Set card ID for the current crawl
+     * @param {string} cardId - Card ID to set
+     * @returns {Promise<void>}
+     */
+    async setCardId(cardId) {
+        if (this.crawl) {
+            await this.crawl.setCardId(cardId);
+        } else {
+            console.warn('No active crawl to set card ID');
+        }
+    }
+
+    /**
+     * Set address ID for the current crawl
+     * @param {string} addressId - Address ID to set
+     * @returns {Promise<void>}
+     */
+    async setAddressId(addressId) {
+        if (this.crawl) {
+            await this.crawl.setAddressId(addressId);
+        } else {
+            console.warn('No active crawl to set address ID');
+        }
+    }
+
+    /**
+     * Get XHR requests matching a URL pattern for the current crawl
+     * @param {RegExp|string} urlPattern - URL pattern to match (RegExp or string)
+     * @returns {Promise<Array>} - Array of matching XHR requests
+     */
+    async getXHRByUrl(urlPattern, id) {
+        if (this.crawl) {
+            return await this.crawl.getXHRByUrl(urlPattern, id);
+        } else {
+            console.warn('No active crawl to get XHR requests');
+            return [];
         }
     }
 
@@ -130,6 +271,12 @@ class BaseCrawler {
             const urlObj = new URL(url);
             const origin = urlObj.origin;
             
+            // Navigate to the site first if not already there
+            const currentUrl = page.url();
+            if (!currentUrl.includes(urlObj.hostname)) {
+                await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            }
+            
             // Get CDP session
             const client = await page.target().createCDPSession();
             
@@ -140,12 +287,15 @@ class BaseCrawler {
                        urlObj.hostname.includes(cookie.domain.replace(/^\./, ''));
             });
             
-            for (const cookie of domainCookies) {
-                await client.send('Network.deleteCookies', {
-                    name: cookie.name,
-                    domain: cookie.domain,
-                    path: cookie.path
-                });
+            if (domainCookies.length > 0) {
+                for (const cookie of domainCookies) {
+                    await client.send('Network.deleteCookies', {
+                        name: cookie.name,
+                        domain: cookie.domain,
+                        path: cookie.path
+                    });
+                }
+                console.log(`Cleared ${domainCookies.length} cookie(s) for: ${urlObj.hostname}`);
             }
             
             // Clear storage (localStorage, sessionStorage, IndexedDB, etc.)
@@ -154,8 +304,8 @@ class BaseCrawler {
                 storageTypes: 'all'
             });
             
-            // Clear cache
-            await client.send('Network.clearBrowserCache');
+            // Clear cache for this origin
+            await client.send('Network.clearBrowserCookies');
             
             console.log(`Cleared site data for: ${urlObj.hostname}`);
             
@@ -253,12 +403,26 @@ class BaseCrawler {
             }
         }
 
-        // Create a new page
-        const page = await this.browser.newPage();
+        // Create a new page in incognito context or default context
+        const page = this.useIncognito && this.incognitoContext 
+            ? await this.incognitoContext.newPage() 
+            : await this.browser.newPage();
         this.pages.set(domain, page);
 
-        // Clear site data for the root domain before navigating
-        await this.clearSiteData(page, url);
+        // Setup console log capturing (silent mode - saved but not displayed)
+        page.on('console', msg => {
+            const logMessage = `[Browser Console ${msg.type()}] ${msg.text()}`;
+            if (this.crawl) {
+                this.crawl.addLog(logMessage, true); // true = silent mode
+            }
+        });
+
+        // Setup error capturing
+        page.on('pageerror', error => {
+            if (this.crawl) {
+                this.crawl.addError(error);
+            }
+        });
 
         // Setup proxy authentication if configured
         await this.setupProxyAuth(page);
@@ -331,7 +495,7 @@ class BaseCrawler {
                 // Try to get response body for text-based content
                 const responseBody = await response.text().catch(() => null);
                 
-                this.capturedRequests.push({
+                const capturedRequest = {
                     url,
                     method: request.method(),
                     requestHeaders: request.headers(),
@@ -340,9 +504,16 @@ class BaseCrawler {
                     contentType,
                     responseBody,
                     timestamp: new Date().toISOString()
-                });
+                };
                 
-                console.log(`Captured XHR: ${request.method()} ${url} (${contentType})`);
+                this.capturedRequests.push(capturedRequest);
+                
+                // Add to crawl tracking if active
+                if (this.crawl) {
+                    await this.crawl.addXHRRequest(capturedRequest);
+                }
+                
+                console.log(`Captured XHR: ${request.method()} (${contentType})`);
             } catch (error) {
                 // Silently ignore errors (e.g., response body already consumed)
             }
@@ -441,6 +612,11 @@ class BaseCrawler {
             // Write to file
             await fs.writeFile(fullPath, ndjson + '\n', 'utf8');
             
+            // Add to crawl tracking if active
+            if (this.crawl) {
+                await this.crawl.addJSON(fullPath, dataArray.length);
+            }
+            
             console.log(`Saved ${dataArray.length} JSON record(s) to: ${fullPath}`);
             return fullPath;
         } catch (error) {
@@ -505,7 +681,12 @@ class BaseCrawler {
             fullPage: true
         });
 
-        console.log(`Screenshot saved: ${fullPath}`);
+        // Add to crawl tracking if active
+        if (this.crawl) {
+            await this.crawl.addScreenshot(fullPath);
+        }
+
+        //console.log(`\n\nScreenshot saved: ${fullPath} \n\n`);
         return fullPath;
     }
 
@@ -534,6 +715,18 @@ class BaseCrawler {
             }
         }
         this.pages.clear();
+        
+        // Close incognito context if it exists
+        if (this.incognitoContext) {
+            try {
+                await this.incognitoContext.close();
+                console.log('Closed incognito context');
+            } catch (error) {
+                console.log('Incognito context already closed or unavailable');
+            }
+            this.incognitoContext = null;
+        }
+        
         console.log('Closed all tabs');
     }
 
@@ -566,7 +759,10 @@ class BaseCrawler {
     async generateRealEmail(onEmailReceived = null, pollInterval = 5000) {
         try {
             // Create inbox using TempMail instance
-            const inbox = await this.tempmail.createInbox();
+            const inbox = await this.tempmail.createInbox({
+                community: false,
+                domain: this.emailDomains[ Math.floor(Math.random() * this.emailDomains.length) ]
+            });
             
             console.log(`Generated email address: ${inbox.address}`);
             
@@ -654,7 +850,7 @@ class BaseCrawler {
         console.log(`Waiting for ${seconds} second(s)...`);
         await new Promise(resolve => setTimeout(resolve, seconds * 1000));
     }
-
+    
     /**
      * Setup cleanup handlers to close all tabs on script interruption
      * Handles SIGINT (Ctrl+C) and SIGTERM (kill command)
@@ -703,6 +899,7 @@ class BaseCrawler {
             'es_ES': 'Spain',
             'it_IT': 'Italy',
             'nl_NL': 'Netherlands',
+            'ro_RO': 'Romania',
             'pt_PT': 'Portugal',
             'pl_PL': 'Poland',
             'sv_SE': 'Sweden',
@@ -728,13 +925,24 @@ class BaseCrawler {
         // Generate real email
         const emailData = await this.generateRealEmail(onEmailReceived, pollInterval);
         
+        // Generate phone number based on locale
+        let phoneNumber;
+        if (locale === 'en_GB') {
+            // UK mobile numbers: Real 07XXX prefix followed by 6 digits
+            const ukPrefixes = ['07971', '07972', '07973', '07974', '07975', '07976', '07977', '07978', '07979'];
+            const prefix = faker.helpers.arrayElement(ukPrefixes);
+            phoneNumber = prefix + faker.string.numeric(6);
+        } else {
+            phoneNumber = faker.phone.number();
+        }
+        
         const userDetails = {
             firstName: faker.person.firstName(),
             lastName: faker.person.lastName(),
             email: emailData.address,
             emailToken: emailData.token,
-            emailPollInterval: emailData.pollInterval,
-            phone: faker.phone.number(),
+            // emailPollInterval excluded - contains non-serializable Timeout object
+            phone: phoneNumber,
             dateOfBirth: {
                 full: dob,
                 day: dob.getDate().toString(),
@@ -751,6 +959,9 @@ class BaseCrawler {
             username: faker.internet.username(),
             password: faker.internet.password({ length: 12, memorable: false })
         };
+        
+        // Store the poll interval separately for cleanup (not in userDetails to avoid serialization issues)
+        userDetails._emailPollInterval = emailData.pollInterval;
 
         console.log(`Generated user: ${userDetails.firstName} ${userDetails.lastName} (${userDetails.email})`);
         return userDetails;

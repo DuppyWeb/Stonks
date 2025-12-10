@@ -3,4 +3,6 @@ Crawlers/package-lock.json
 Crawlers/*/node_modules
 Crawlers/screenshots/
 Crawlers/jsons/
+Crawlers/crawls.db
+crawls.db
 
