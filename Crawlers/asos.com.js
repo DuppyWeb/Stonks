@@ -2,8 +2,7 @@ const BaseCrawler = require('./base.crawler.js');
 
 (async () => {
     const crawler = new BaseCrawler({
-        crawlerName: 'asos.com.js',
-        dbPath: './database/crawls.db',
+        crawlerName: 'asos.com',
         useIncognito: true, 
         proxy: {
             enabled: true,
@@ -55,12 +54,8 @@ const BaseCrawler = require('./base.crawler.js');
         const user = await crawler.generateUserDetails('en_GB', (email, address) => {
             console.log(`Email received: ${email.subject}`);
         });
-
-        // Set user data in crawl
         crawler.crawl.setUserData(user);
-        await crawler.crawl.save();
-
-        console.log(user);
+        
         await crawler.wait(3);
 
         //Type email
@@ -106,16 +101,15 @@ const BaseCrawler = require('./base.crawler.js');
         
         await crawler.wait(12);
 
-
-       
-        
         console.log("Getting User ID")
         details = await crawler.getXHRByUrl(/my.asos.com\/api\/customer\/profile\/v2\/customers/);
         try {
             let response = details[0].responseBody;
             let data = JSON.parse(response);        
             if (typeof data.customerId !== 'undefined') {
+
                 await crawler.setAccountId(data.customerId);
+                await crawler.crawl.save();
             }
         } catch (error) {
             console.error('Failed to get User ID:', error);
@@ -129,7 +123,7 @@ const BaseCrawler = require('./base.crawler.js');
         await page.evaluate((number)=>{
             document.querySelector('input[name="telephoneMobile"]').value = number;
         }, user.phone)
-        await page.type('input[id="telephoneMobile"]', user.phone);
+        await page.type('input[name="telephoneMobile"]', user.phone);
 
         const addressSelects = await page.$$('select');
         
@@ -143,19 +137,20 @@ const BaseCrawler = require('./base.crawler.js');
         } catch {
             //Silent
         }
-
+        await crawler.wait(2);
         await page.type('input[name="address1"]', user.address.street);
-
+        await crawler.wait(2);
         await page.type('input[name="locality"]', user.address.city);
-
-        await page.type('input[name="postalCode"]', user.address.postcode);
-
-        await crawler.wait(1);
-
+        await crawler.wait(2);
+        await page.type('input[name="postalCode"]', 'ww33ww');
+        await crawler.wait(2);
         await page.click('button[type="submit"]');
 
         await crawler.wait(5);
 
+        await page.goto('https://my.asos.com/my-account/addresses');
+
+        await crawler.wait(5);
 
         console.log("Getting Address ID")
         details = await crawler.getXHRByUrl(/api\/customer\/profile\/v2\/customers\/([0-9]+)\/addresses/);
@@ -164,6 +159,7 @@ const BaseCrawler = require('./base.crawler.js');
             let data = JSON.parse(response);        
             if (typeof data.addresses[0] !== 'undefined') {
                 await crawler.setAddressId(data.addresses[0].addressId);
+                await crawler.crawl.save();
             }
         } catch (error) {
             console.error('Failed to get/set address ID:', error);

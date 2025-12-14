@@ -287,6 +287,7 @@ class Crawl {
             }
         }
         this.userData = cleanData;
+        this.save();
     }
 
     /**

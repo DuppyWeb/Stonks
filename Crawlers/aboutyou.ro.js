@@ -3,7 +3,6 @@ const BaseCrawler = require('./base.crawler.js');
 (async () => {
     const crawler = new BaseCrawler({
         crawlerName: 'aboutyou.ro.js',
-        dbPath: './database/crawls.sqlite',
         useIncognito: true, 
         proxy: {
             enabled: true,

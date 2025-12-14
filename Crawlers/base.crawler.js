@@ -18,6 +18,16 @@ class BaseCrawler {
         this.tempmail = new TempMail('tempmail.20251208.fm1wy3t334e7or288wqdoa45fbl0nd692nhzvepwx2e6l7ym'); // Initialize TempMail client
         this.emailDomains =  ["0xff.fit", "ruhanemuk.fit", "chlotesxxl.online", "ruhanemuk.online", "ruhanemuk.space", "ruhanemuk.store", "chlotesxxl.xyz"];
         
+        // Mode from CLI argument (user, address, card, order)
+        const validModes = ['user', 'address', 'card', 'order'];
+        const cliMode = process.argv[2];
+        this.mode = validModes.includes(cliMode) ? cliMode : null;
+        if (this.mode) {
+            console.log(`Crawler mode set to: ${this.mode}`);
+        } else {
+            console.log("Invalid mode selected, please select from", validModes)
+            process.exit(99);
+        }
         
         // Proxy configuration
         this.proxy = {
@@ -34,7 +44,7 @@ class BaseCrawler {
         // Crawl tracking
         this.crawl = null;
         this.crawlerName = options.crawlerName || 'unknown';
-        this.dbPath = options.dbPath || './crawls.sqlite';
+        this.dbPath = './database/crawls.sqlite';
     }
 
     /**
@@ -160,6 +170,14 @@ class BaseCrawler {
         } else {
             console.warn('No active crawl to set account ID');
         }
+        if ( this.mode === 'user' ) {
+            console.log('UserID mode Selected, stopping');
+            await this.stopCrawl();
+            console.log('Crawl completed successfully!');
+            await this.disconnect();
+            process.exit(0);
+        }
+
     }
 
     /**
@@ -173,6 +191,15 @@ class BaseCrawler {
         } else {
             console.warn('No active crawl to set order ID');
         }
+        if ( this.mode === 'order' ) {
+            console.log('Oder mode Selected, stopping');
+            await this.stopCrawl();
+            console.log('Crawl completed successfully!');
+            await this.disconnect();
+            process.exit(0);
+        }
+
+
     }
 
     /**
@@ -212,6 +239,15 @@ class BaseCrawler {
         } else {
             console.warn('No active crawl to set address ID');
         }
+
+        if ( this.mode === 'address' ) {
+            console.log('Address mode Selected, stopping');
+            await this.stopCrawl();
+            console.log('Crawl completed successfully!');
+            await this.disconnect();
+            process.exit(0);
+        }
+
     }
 
     /**

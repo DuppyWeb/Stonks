@@ -3,7 +3,6 @@ const BaseCrawler = require('./base.crawler.js');
 (async () => {
     const crawler = new BaseCrawler({
         crawlerName: 'revolve.com',
-        dbPath: './database/crawls.sqlite',
         useIncognito: true,
         proxy: {
             enabled: true,
@@ -43,7 +42,7 @@ const BaseCrawler = require('./base.crawler.js');
             console.log(`Email received: ${email.subject}`);
         });
         crawler.crawl.setUserData(user);
-        await crawler.crawl.save();
+
 
         // Capture specific URLs
         await crawler.capture([/www.revolve.com\/r\/ajax\//], 'text/html');
@@ -95,7 +94,6 @@ const BaseCrawler = require('./base.crawler.js');
         }
 
         await crawler.setAccountId(userId);
-
 
 
 
@@ -203,7 +201,6 @@ const BaseCrawler = require('./base.crawler.js');
             fill('input[name="billingZipCode"]', '077191');
             fill('input[name="billingTelephone"]', '+40756531296');
         });
-
         await crawler.wait(12);
 
         await page.click('input[type="submit"]');
