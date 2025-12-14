@@ -1,0 +1,8 @@
+No proxy configured. Chrome will use direct connection.
+non-network local connections being added to access control list
+Starting Chrome with proxy: none
+Remote debugging on port: 9222
+Using DISPLAY: :0
+Chrome launched. WebSocket endpoint will be available at ws://127.0.0.1:9222
+
+ 

@@ -407,7 +407,11 @@ class BaseCrawler {
         const page = this.useIncognito && this.incognitoContext 
             ? await this.incognitoContext.newPage() 
             : await this.browser.newPage();
+
+        await page.setViewport({ width: 1920, height: 1080 });
+
         this.pages.set(domain, page);
+
 
         // Setup console log capturing (silent mode - saved but not displayed)
         page.on('console', msg => {
@@ -446,7 +450,7 @@ class BaseCrawler {
      * Set up request interception for capturing URLs
      * Only captures XHR requests with text-based content types (JSON, XML, etc.)
      */
-    async setupRequestInterception(page) {
+    async setupRequestInterception(page, extraTypes) {
         // Use response event to filter by content type
         page.on('response', async (response) => {
             const request = response.request();
@@ -481,8 +485,10 @@ class BaseCrawler {
                 'text/plain',
                 'application/ld+json',
                 'application/x-www-form-urlencoded',
-                'application/graphql'
+                'application/graphql',
+                ...extraTypes
             ];
+
             
             const isTextBased = textBasedTypes.some(type => contentType.toLowerCase().includes(type));
             
@@ -526,7 +532,7 @@ class BaseCrawler {
      * Excludes images, HTML, CSS, and other non-text resources
      * @param {string|RegExp|Array} patterns - URL patterns to capture
      */
-    async capture(patterns) {
+    async capture(patterns, extraTypes = []) {
         if (!Array.isArray(patterns)) {
             patterns = [patterns];
         }
@@ -547,7 +553,7 @@ class BaseCrawler {
 
         // Update existing pages with new interception
         for (const [domain, page] of this.pages.entries()) {
-            await this.setupRequestInterception(page);
+            await this.setupRequestInterception(page, extraTypes);
         }
 
         console.log(`Added ${patterns.length} capture pattern(s)`);
@@ -587,6 +593,44 @@ class BaseCrawler {
         const html = await page.content();
         return html;
     }
+
+    async getFullHTML(page) {
+        return await page.evaluate(() => {
+            const getShadowHTML = (shadowRoot) => {
+                let html = '';
+                for (const node of shadowRoot.childNodes) {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        html += node.outerHTML;
+                        // Recursively handle nested shadow DOMs
+                        if (node.shadowRoot) {
+                            html += getShadowHTML(node.shadowRoot);
+                        }
+                    } else {
+                        html += node.textContent || '';
+                    }
+                }
+                return html;
+            };
+
+            const serializeElement = (el) => {
+                let html = el.outerHTML;
+
+                // Replace shadow roots with their content
+                for (const child of el.querySelectorAll('*')) {
+                    if (child.shadowRoot) {
+                        const shadowHTML = getShadowHTML(child.shadowRoot);
+                        html = html.replace(
+                            new RegExp(`<${child.localName}[^>]*>`),
+                            `$&<!--shadow-root-->${shadowHTML}`
+                        );
+                    }
+                }
+                return html;
+            };
+
+            return serializeElement(document.documentElement);
+        });
+    };
 
     /**
      * Save data as newline-separated JSON (NDJSON) to disk with SHA1-based nested directory structure

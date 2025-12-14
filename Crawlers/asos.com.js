@@ -67,11 +67,9 @@ const BaseCrawler = require('./base.crawler.js');
         await page.waitForSelector('input[id="email"]', {"timeout": 30000} );
         await page.type('input[id="email"]', user.email);
 
-        await crawler.wait(5);
-        
         await page.click('button[type="submit"]');
-       
-        await page.waitForSelector('input[id="firstName"]', {"timeout": 30000} );
+
+        await crawler.wait(8);
         
         //Fill form
         await page.type('input[id="firstName"]', user.firstName);
@@ -85,8 +83,8 @@ const BaseCrawler = require('./base.crawler.js');
         const selects = await page.$$('select');
         
         if (selects.length >= 3) {
-            await selects[0].select(user.dateOfBirth.day);   // Day
-            await selects[1].select(user.dateOfBirth.month); // Month
+            await selects[0].select("11");   // Day
+            await selects[1].select("11"); // Month
             await selects[2].select(user.dateOfBirth.year);  // Year
         }
 
@@ -101,19 +99,14 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.wait(15);
         
         // Save screenshot (automatically tracked)
-        const screenshotPath = await crawler.saveScreen(page);
-        
-
-
+        await crawler.saveScreen(page);
 
         await page.goto('https://my.asos.com/my-account');
 
         
         await crawler.wait(12);
 
-        // Get captured requests and save (automatically tracked)
-        const captured = crawler.getCapturedRequests();
-        let jsonFile = await crawler.saveJSON(captured);
+
        
         
         console.log("Getting User ID")
@@ -133,7 +126,10 @@ const BaseCrawler = require('./base.crawler.js');
 
         await crawler.wait(4);
 
-        await page.type('input[name="telephoneMobile"]', user.phoneNumber);
+        await page.evaluate((number)=>{
+            document.querySelector('input[name="telephoneMobile"]').value = number;
+        }, user.phone)
+        await page.type('input[id="telephoneMobile"]', user.phone);
 
         const addressSelects = await page.$$('select');
         
@@ -141,6 +137,12 @@ const BaseCrawler = require('./base.crawler.js');
             await addressSelects[0].select('GB'); 
         }
         await crawler.wait(3);
+
+        try {
+            await page.click('button[name="showManualAddressField"]');
+        } catch {
+            //Silent
+        }
 
         await page.type('input[name="address1"]', user.address.street);
 

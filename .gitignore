@@ -1,4 +1,7 @@
 .idea
+_ChromeDataDir
+node_modules
+Crawlers/database
 Crawlers/package-lock.json
 Crawlers/*/node_modules
 Crawlers/screenshots/
