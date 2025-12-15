@@ -146,30 +146,111 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.wait(2);
         await page.click('button[type="submit"]');
 
-        await crawler.wait(5);
+        await crawler.wait(3);
 
         await page.goto('https://my.asos.com/my-account/addresses');
 
-        await crawler.wait(5);
+        await crawler.wait(10);
 
         console.log("Getting Address ID")
         details = await crawler.getXHRByUrl(/api\/customer\/profile\/v2\/customers\/([0-9]+)\/addresses/);
-        try {
-            let response = details[0].responseBody;
-            let data = JSON.parse(response);        
+        console.log("Addresses:", details)
+        console.log("ADL:" + details.length)
+
+        for (const address of details) {
+            let response = details.responseBody;
+            let data = JSON.parse(response);
             if (typeof data.addresses[0] !== 'undefined') {
+                console.log("Setting Address ID: " + data.addresses[0].addressId)
                 await crawler.setAddressId(data.addresses[0].addressId);
                 await crawler.crawl.save();
             }
-        } catch (error) {
-            console.error('Failed to get/set address ID:', error);
         }
+
+
+        //Register a Payment Method
+
+        await page.goto('https://my.asos.com/my-account/payment-methods/add')
+
+        let cardID = false;
+        try {
+            cardID = await client.send('Runtime.evaluate', {
+                awaitPromise: true,
+                expression: `//CDP
+                            (async() => {
+                                const sleep = ms => new Promise(r => setTimeout(r, ms));
+                                
+                                function setNativeValue(selector, value) {
+                                    let element =  document.querySelector(selector);
+                                    const valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                                    const prototype = Object.getPrototypeOf(element);
+                                    const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+                                    if (valueSetter && valueSetter !== prototypeValueSetter) {
+                                        prototypeValueSetter.call(element, value);
+                                    } else {
+                                        valueSetter.call(element, value);
+                                    }
+                                    element.dispatchEvent(new Event('input', { bubbles: true }));
+                                    element.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
+                                
+                                document.querySelector('a[data-auto-id="AddNewCardButton"]').click();
+                                await sleep(10000);
+                                
+                                setNativeValue('input[id="cardNumber"]', '{$user.card.number}');
+                                await sleep(2000);
+                                document.querySelector('select#expiryMonth').value = '${user.card.expiryMonth}';
+                                document.querySelector('select#expiryMonth').dispatchEvent(new Event('change', { bubbles: true }));
+                                await sleep(2000);
+                                document.querySelector('select#expiryYear').value = '${user.card.expiryYearFull}';
+                                document.querySelector('select#expiryYear').dispatchEvent(new Event('change', { bubbles: true }));
+                                await sleep(2000);
+                                setNativeValue('input[id="cardName"]', '{$user.firstName} {$user.lastName}');
+                                await sleep(2000);
+                                document.querySelector('button[type="submit"]').click();
+                                await sleep(8000);
+                                document.querySelector('div[data-auto-id="PaymentMethod"]').querySelector('button').click();
+                                await sleep(3000);
+                                document.querySelector('button[data-auto-id="DeletePaymentMethodModalAccept"]').click();
+                                
+                                
+                            })()
+                          `
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
+
+        console.log("Getting CardID ID")
+        details = await crawler.getXHRByUrl(/\/api\/customer\/paymentdetails\/v2\/customers\/([0-9]+)\/paymentdetails\/cards/);
+        console.log("Cards:", details)
+        console.log("ADL:" + details.length)
+
+        for (const card of details) {
+            let response = details.responseBody;
+            let data = JSON.parse(response);
+            if (typeof data.cardNumber !== 'undefined' && typeof data.id !== 'undefined' ) {
+                console.log("Setting Card ID: " + data.id)
+                await crawler.setAddressId(data.id);
+                await crawler.crawl.save();
+            }
+        }
+
+
+        await crawler.wait(5);
+        await page.click('');
+        await crawler.wait(5);
 
 
         
         // Mark crawl as completed
         await crawler.stopCrawl();
         console.log('Crawl completed successfully!');
+
+        await crawler.closeTab()
+
+        process.exit(0);
 
         
 

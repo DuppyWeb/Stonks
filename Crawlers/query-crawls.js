@@ -16,7 +16,7 @@ const sqlite3 = require('sqlite3').verbose();
 const { open } = require('sqlite');
 const Crawl = require('./crawl.class');
 
-const DB_PATH = './crawls.db';
+const DB_PATH = './crawls.sqlite';
 
 async function openDatabase() {
     return await open({

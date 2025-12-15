@@ -1,0 +1,21 @@
+<component name="LanguageInjectionConfiguration">
+    <injection language="JavaScript" injector-id="js">
+        <display-name>CDP single-line</display-name>
+        <places>
+            <place>
+                <pattern>//CDP\s+(.*)</pattern>
+            </place>
+        </places>
+        <value-pattern>$1</value-pattern>
+    </injection>
+
+    <injection language="JavaScript" injector-id="js">
+        <display-name>CDP block</display-name>
+        <places>
+            <place>
+                <pattern>/\*CDP([\s\S]*?)\*/</pattern>
+            </place>
+        </places>
+        <value-pattern>$1</value-pattern>
+    </injection>
+</component>

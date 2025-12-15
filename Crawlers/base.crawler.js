@@ -516,6 +516,7 @@ class BaseCrawler {
             // Only capture text-based content types
             const textBasedTypes = [
                 'application/json',
+                'text/html',
                 'application/xml',
                 'text/xml',
                 'text/plain',
@@ -555,7 +556,7 @@ class BaseCrawler {
                     await this.crawl.addXHRRequest(capturedRequest);
                 }
                 
-                console.log(`Captured XHR: ${request.method()} (${contentType})`);
+                console.log(`Captured XHR: ${request.method()} ${request.status} (${contentType}) `);
             } catch (error) {
                 // Silently ignore errors (e.g., response body already consumed)
             }
@@ -841,7 +842,8 @@ class BaseCrawler {
             // Create inbox using TempMail instance
             const inbox = await this.tempmail.createInbox({
                 community: false,
-                domain: this.emailDomains[ Math.floor(Math.random() * this.emailDomains.length) ]
+                domain: this.emailDomains[ Math.floor(Math.random() * this.emailDomains.length) ],
+                //prefix:
             });
             
             console.log(`Generated email address: ${inbox.address}`);
@@ -919,6 +921,57 @@ class BaseCrawler {
         } catch (error) {
             throw new Error(`Failed to check inbox: ${error.message}`);
         }
+    }
+
+    _calculateLuhnCheckDigit(numberWithoutCheckDigit) {
+        const digits = numberWithoutCheckDigit.split('').map(d => parseInt(d, 10));
+        let sum = 0;
+        let shouldDouble = true;
+        for (let i = digits.length - 1; i >= 0; i--) {
+            let digit = digits[i];
+            if (shouldDouble) {
+                digit *= 2;
+                if (digit > 9) digit -= 9;
+            }
+            sum += digit;
+            shouldDouble = !shouldDouble;
+        }
+        return ((10 - (sum % 10)) % 10).toString();
+    }
+
+    _generateLuhnValidCardNumber(prefix, length) {
+        const remaining = length - prefix.length - 1;
+        const body = prefix + faker.string.numeric(remaining);
+        const checkDigit = this._calculateLuhnCheckDigit(body);
+        return body + checkDigit;
+    }
+
+    generateFakeCreditCardData(cardholderName = null) {
+        const cardTypes = [
+            { brand: 'visa', prefixes: ['4'], length: 16, cvvLength: 3 },
+            { brand: 'mastercard', prefixes: ['51', '52', '53', '54', '55'], length: 16, cvvLength: 3 },
+            { brand: 'amex', prefixes: ['34', '37'], length: 15, cvvLength: 4 }
+        ];
+
+        const cardType = faker.helpers.arrayElement(cardTypes);
+        const prefix = faker.helpers.arrayElement(cardType.prefixes);
+        const number = this._generateLuhnValidCardNumber(prefix, cardType.length);
+
+        const now = new Date();
+        const expiryYearFull = now.getFullYear() + faker.number.int({ min: 1, max: 5 });
+        const expiryMonth = faker.number.int({ min: 1, max: 12 });
+        const mm = expiryMonth.toString().padStart(2, '0');
+        const yy = (expiryYearFull % 100).toString().padStart(2, '0');
+
+        return {
+            brand: cardType.brand,
+            number,
+            expiryMonth: mm,
+            expiryYear: yy,
+            expiryYearFull: expiryYearFull.toString(),
+            cvv: faker.string.numeric(cardType.cvvLength),
+            name: cardholderName || `${faker.person.firstName()} ${faker.person.lastName()}`
+        };
     }
 
     /**
@@ -1016,9 +1069,12 @@ class BaseCrawler {
             phoneNumber = faker.phone.number();
         }
         
+        const firstName = faker.person.firstName();
+        const lastName = faker.person.lastName();
+
         const userDetails = {
-            firstName: faker.person.firstName(),
-            lastName: faker.person.lastName(),
+            firstName,
+            lastName,
             email: emailData.address,
             emailToken: emailData.token,
             // emailPollInterval excluded - contains non-serializable Timeout object
@@ -1036,6 +1092,7 @@ class BaseCrawler {
                 postcode: faker.location.zipCode(),
                 country: country
             },
+            card: this.generateFakeCreditCardData(`${firstName} ${lastName}`),
             username: faker.internet.username(),
             password: faker.internet.password({ length: 12, memorable: false })
         };

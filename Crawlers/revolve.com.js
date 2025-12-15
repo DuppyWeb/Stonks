@@ -173,45 +173,115 @@ const BaseCrawler = require('./base.crawler.js');
         //Register Card
         await crawler.wait(10);
 
-        await page.click('button[id="add_new_billing"]');
-        await crawler.wait(4);
+        const client = await page.target().createCDPSession();
+        await client.send('Runtime.enable');
 
-        //Card Data
-        await page.type('input[id="card_num"]', '5468 0507 1272 4730');
+        //Register Card
+        try {
+            let cardID = await client.send('Runtime.evaluate', {
+                awaitPromise: true,
+                expression: `//CDP
+                            (async() => {
+                                const sleep = ms => new Promise(r => setTimeout(r, ms));
+                                function setNativeValue(selector, value) {
+                                    let element =  document.querySelector(selector);
+                                    const valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                                    const prototype = Object.getPrototypeOf(element);
+                                    const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+                                    if (valueSetter && valueSetter !== prototypeValueSetter) {
+                                        prototypeValueSetter.call(element, value);
+                                    } else {
+                                        valueSetter.call(element, value);
+                                    }
+                                    element.dispatchEvent(new Event('input', { bubbles: true }));
+                                    element.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
+                                
+                                document.querySelector('button[id="add_new_billing"]').click();
+                                
+                                await sleep(3000);
+                                setNativeValue('input[id="card_num"]', '${user.card.number}');
+                                setNativeValue('input[id="security_code"]', '${user.card.cvv}');
+                                document.querySelector('select#expire_month').value = '${user.card.expiryMonth}';
+                                document.querySelector('select#expire_month').dispatchEvent(new Event('change', { bubbles: true }));
+                                await sleep(2000);
+                                document.querySelector('select#expire_year').value = '${user.card.expiryYear}';
+                                document.querySelector('select#expire_year').dispatchEvent(new Event('change', { bubbles: true }));
+                                await sleep(1000);
+                                document.querySelector('select[id="billingRowId_1billing_country"]').value = 'Romania';
+                                document.querySelector('select[id="billingRowId_1billing_country"]').dispatchEvent(new Event('change', { bubbles: true })); 
+                                await sleep(1000);
+                                setNativeValue('input[id="billingRowId_1billing_name_eu"]', 'Bencsik Oszkar');
+                                await sleep(1000);
+                                setNativeValue('input[id="billingRowId_1billing_street_eu"]', 'Drumul Bisericii 36 - 38');
+                                await sleep(1000);
+                                setNativeValue('input[id="billingRowId_1billing_city_eu"]', 'Voluntari');
+                                await sleep(1000);
+                                setNativeValue('input[id="billingRowId_1billing_zip_code_eu"]', '077191');
+                                await sleep(1000);
+                                setNativeValue('input[id="billingRowId_1billing_telephone_eu"]', '+40756531296');
+                                await sleep(5000);
+                                document.querySelector('div[id="billingRowId_1"]').querySelector('input[type="submit"]').click()
+                                await sleep(10000);
+                                
+                                return document.querySelector('input[type="hidden"][class="billingID"]').value;
+                                
+                                
+                            })()
+                          `
+            });
+        } catch (e) {
+            console.log(e);
+        }
 
-        await page.select('select[id="expire_month"]', '02');
-        await page.select('select[id="expire_year"]', '29');
-        await page.type('input[id="security_code"]', '881');
 
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                console.log(`Navigation attempt ${attempt}/${maxRetries} to Revolve...`);
+                await page.goto('https://www.revolve.com/r/MyBillingSettings.jsp', {
+                    waitUntil: 'domcontentloaded',
+                    timeout: 30000
+                });
+                break;
+            } catch (error) {
+                console.warn(`Attempt ${attempt} failed: ${error.message}`);
+                if (attempt === maxRetries) {
+                    throw new Error(`Failed to load Revolve after ${maxRetries} attempts: ${error.message}`);
+                }
+                await new Promise(r => setTimeout(r, 3000));
+            }
+        }
+        let cardID = false;
+        try {
+            cardID = await client.send('Runtime.evaluate', {
+                awaitPromise: true,
+                expression: `//CDP
+                            (async() => {
+                                const sleep = ms => new Promise(r => setTimeout(r, ms));
+                                let cardID = document.querySelector('input[type="hidden"][class="billingID"]').value;
+                                //Delete it just for sakes
+                                removeBilling('row_0')
+                                await sleep(5000);
+                                try {
+                                    document.querySelector('input[id="confirm_remove_billing"]').click();
+                                } catch (e) {
+                                    //Ignore
+                                }
+                                
+                                return cardID;
+                            })()
+                          `
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        
+        console.log("Got Card ID", cardID);
+        if (cardID !== false ) {
+            await crawler.crawl.setCardId(cardID.result.value)
+            await crawler.crawl.save()
+        }
 
-
-        await page.select('select[id="billingRowId_1billing_country"]', 'Romania');
-        await crawler.wait(5);
-        await page.evaluate(() => {
-            const fill = (sel, val) => {
-                const el = document.querySelector(sel);
-                el.focus();
-                el.value = val;
-                el.dispatchEvent(new Event('input', { bubbles: true }));
-                el.dispatchEvent(new Event('change', { bubbles: true }));
-            };
-
-            fill('input[name="billingName"]', 'Bencsik Oszkar');
-            fill('input[name="billingStreet"]', 'Drumul Bisericii 36 - 38');
-            fill('input[name="billingZipCode"]', '077191');
-            fill('input[name="billingTelephone"]', '+40756531296');
-        });
-        await crawler.wait(12);
-
-        await page.click('input[type="submit"]');
-        await crawler.wait(60);
-
-        let cardID = await page.evaluate(()=>{
-            return document.querySelector('input[type="hidden"][class="billingID"]').value;
-        })
-
-        await  crawler.crawl.setCardId(cardID)
-        await crawler.crawl.save()
 
         await page.click('button[id="remove-cta-row_0"]');
         await crawler.wait(4);
@@ -223,158 +293,6 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.disconnect();
 
         process.exit(1);
-
-
-        //Create an Order and Cancel it
-
-
-        await page.goto('https://www.aboutyou.ro/p/adidas-originals/rucsac-adicolor-13836634');
-
-        await crawler.wait(5);
-
-        await page.click('button[data-testid="addToBasketButton"]')
-
-        await crawler.wait(10);
-
-        await crawler.saveScreen(page);
-
-        await page.goto('https://www.aboutyou.ro/cos-cumparaturi');
-
-        await crawler.saveScreen(page);
-
-        await crawler.wait(5);
-
-        await page.click('button[data-testid="proceedToCheckoutButton"]');
-
-        await crawler.wait(5);
-
-        await crawler.saveScreen(page);
-
-        // Helper function to type into shadow DOM inputs using Puppeteer's page.type()
-        async function typeIntoShadowDOM(page, inputSelector, text) {
-            await page.evaluate((inputSelector, text) => {
-                function setNativeValue(element, value) {
-                    if (!element) {
-                        console.error('Element not found for selector:', inputSelector);
-                        return;
-                    }
-
-                    // 1. Get the native value setter from the prototype
-                    const valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-                    const prototype = Object.getPrototypeOf(element);
-                    const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
-
-                    // 2. Call the native setter (this bypasses React's override)
-                    if (valueSetter && valueSetter !== prototypeValueSetter) {
-                        prototypeValueSetter.call(element, value);
-                    } else {
-                        valueSetter.call(element, value);
-                    }
-
-                    // 3. Dispatch the input event so the framework wakes up and sees the change
-                    element.dispatchEvent(new Event('input', { bubbles: true }));
-                    element.dispatchEvent(new Event('change', { bubbles: true }));
-                }
-
-                const hostElement = document.querySelector('scayle-checkout');
-                if (!hostElement || !hostElement.shadowRoot) {
-                    console.error('Shadow host not found or no shadow root');
-                    return;
-                }
-
-                const shadowInput = hostElement.shadowRoot.querySelector(inputSelector);
-                setNativeValue(shadowInput, text);
-            }, inputSelector, text);
-        }
-
-        // Fill in shipping address fields
-        await typeIntoShadowDOM(page, 'input[id="shippingAddress.street"]', 'Drumul Bisericii 36-38');
-        await crawler.wait(2);
-
-        await page.evaluate(()=>{
-            const hostElement = document.querySelector('scayle-checkout');
-            hostElement.shadowRoot.querySelector('ul[role="listbox"] li').click();
-        })
-
-        await crawler.saveScreen(page);
-
-        await typeIntoShadowDOM(page, 'input[id="shippingAddress.houseNumber"]', '12');
-        await crawler.wait(2);
-        await typeIntoShadowDOM(page, 'input[id="shippingAddress.zipCode"]', '077191');
-        await crawler.wait(2);
-        await typeIntoShadowDOM(page, 'input[id="shippingAddress.city"]', 'Voluntari');
-        await crawler.wait(2);
-        await typeIntoShadowDOM(page, 'input[id="shippingAddress.state"]', 'Ilfov');
-        await crawler.wait(2);
-        await typeIntoShadowDOM(page, 'input[id="shippingAddress.birthDate"]', '03.03.1988');
-        await crawler.wait(2);
-
-        await crawler.saveScreen(page);
-
-        // Click next button
-        await page.evaluate(() => {
-            let host = document.querySelector('scayle-checkout');
-            let shadowRoot = host?.shadowRoot;
-            shadowRoot?.querySelector('button[data-test-id="navigation-next-step"]').click();
-        });
-
-        await crawler.wait(10);
-
-        // Click payment option
-        await page.evaluate(() => {
-            const host = document.querySelector('scayle-checkout');
-            const shadowRoot = host?.shadowRoot;
-            const option = shadowRoot?.querySelector('div[id="option-label-ro_cod"]');
-            option?.click();
-        });
-
-        // Type phone number using Puppeteer's type method
-        const phoneNumber = '0756' + (100000 + Math.floor(Math.random() * 900000));
-        await typeIntoShadowDOM(page, 'input[id="logisticsPhoneNumber"]', phoneNumber);
-
-        await crawler.wait(5);
-
-        await crawler.saveScreen(page);
-
-        // Click final next button
-        await page.evaluate(() => {
-            const host = document.querySelector('scayle-checkout');
-            const shadowRoot = host?.shadowRoot;
-            const nextBtn2 = shadowRoot?.querySelector('button[data-test-id="navigation-next-step"]');
-            nextBtn2?.click();
-        });
-
-        await crawler.saveScreen(page);
-
-        await crawler.wait(5);
-
-        await crawler.saveScreen(page);
-
-        await crawler.wait(5);
-
-        await page.goto('https://www.aboutyou.ro/a/orders');
-
-        await crawler.wait(5);
-
-        await crawler.saveScreen(page);
-
-        let orderId  = await page.evaluate(()=>{
-            return  document.querySelector('div[data-testid="OrderId"]').textContent;
-        })
-
-        await crawler.setOrderId(orderId);
-
-        await page.click('div[data-testid="OrderId"]');
-
-        await crawler.wait(3);
-
-        await page.click('button[aria-label="Retrage comanda"]');
-
-        await crawler.wait(3);
-
-        await page.click('button[aria-label="Retrage livrarea"]');
-
-        await crawler.wait(5);
 
 
         await crawler.saveScreen(page);
@@ -389,6 +307,9 @@ const BaseCrawler = require('./base.crawler.js');
     } catch (error) {
         console.error('Crawl failed:', error);
         await crawler.failCrawl(error);
+        //await crawler.closeTab();
+        //await crawler.disconnect();
+        process.exit(2);
     }
 
 

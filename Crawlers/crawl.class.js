@@ -23,7 +23,7 @@ class Crawl {
         
         // Database connection
         this.db = null;
-        this.dbPath = options.dbPath || './crawls.db';
+        this.dbPath = options.dbPath || './crawls.sqlite';
         this.crawlId = null;
     }
 
@@ -427,7 +427,7 @@ class Crawl {
     /**
      * Load crawl from database by ID
      */
-    static async loadFromDatabase(crawlId, dbPath = './crawls.db') {
+    static async loadFromDatabase(crawlId, dbPath = './crawls.sqlite') {
         const db = await open({
             filename: dbPath,
             driver: sqlite3.Database
