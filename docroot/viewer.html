@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%231a1a2e' width='32' height='32' rx='4'/><polyline fill='none' stroke='%2300d26a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' points='4,22 10,18 14,20 18,12 22,14 28,6'/><circle fill='%2300d26a' cx='28' cy='6' r='2.5'/></svg>">
+    <title>Crawl Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filters select {
+            padding: 8px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .filters button {
+            padding: 8px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .filters button:hover {
+            background: #5568d3;
+        }
+
+        .pagination {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .pagination-info {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .pagination-btn {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: #5568d3;
+        }
+
+        .pagination-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-input {
+            width: 60px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .sort-controls {
+            background: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .sort-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .stats-bar {
+            background: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .crawls-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .crawl-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 20px 30px;
+            transition: background 0.2s;
+        }
+
+        .crawl-item:hover {
+            background: #f9f9f9;
+        }
+
+        .crawl-item:last-child {
+            border-bottom: none;
+        }
+
+        .crawl-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .crawl-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .crawl-id {
+            font-size: 14px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .crawl-site {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-running {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .crawl-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ids-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .id-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .id-label {
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .id-value {
+            color: #333;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .json-items {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .json-badge {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .json-badge:hover {
+            background: #bbdefb;
+            transform: translateY(-2px);
+        }
+
+        .json-badge.has-data {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .json-badge.has-data:hover {
+            background: #a5d6a7;
+        }
+
+        .json-badge.empty {
+            background: #ffebee;
+            color: #c62828;
+            cursor: not-allowed;
+        }
+
+        .json-icon {
+            font-size: 16px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            margin: 20px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-controls {
+            padding: 15px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #f8f9fa;
+        }
+
+        .modal-controls label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .modal-controls input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .json-viewer {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .image-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: #f5f5f5;
+        }
+
+        .image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: auto;
+            min-height: 200px;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+        }
+
+        .image-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Full-screen image viewer */
+        .fullscreen-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen-viewer.show {
+            display: flex;
+        }
+
+        .fullscreen-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 100px;
+        }
+
+        .fullscreen-image {
+            width: 100%;
+            height: auto;
+            max-height: calc(100vh - 160px);
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .fullscreen-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .fullscreen-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .fullscreen-nav.prev {
+            left: 20px;
+        }
+
+        .fullscreen-nav.next {
+            right: 20px;
+        }
+
+        .fullscreen-nav:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .fullscreen-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .fullscreen-close:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .fullscreen-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .fullscreen-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #333;
+            max-width: 80%;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🔍 Crawl Viewer</h1>
+            <a href="index.html" class="back-link">← Back to Dashboard</a>
+        </div>
+        <div class="filters">
+            <select id="siteFilter">
+                <option value="">All Sites</option>
+            </select>
+            <select id="statusFilter">
+                <option value="">All Status</option>
+                <option value="completed">Completed</option>
+                <option value="running">Running</option>
+                <option value="failed">Failed</option>
+            </select>
+            <button onclick="loadCrawls()">Refresh</button>
+        </div>
+    </div>
+
+    <div class="sort-controls">
+        <span class="sort-label">Sort by:</span>
+        <select id="sortBy">
+            <option value="started_at">Start Time</option>
+            <option value="finished_at">Finish Time</option>
+            <option value="id">ID</option>
+            <option value="crawl">Site</option>
+            <option value="status">Status</option>
+        </select>
+        <select id="sortOrder">
+            <option value="DESC">Newest First</option>
+            <option value="ASC">Oldest First</option>
+        </select>
+        <span class="sort-label" style="margin-left: 20px;">Per page:</span>
+        <select id="perPage">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-label">Total Crawls</span>
+            <span class="stat-value" id="totalCrawls">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Completed</span>
+            <span class="stat-value" id="completedCrawls" style="color: #28a745;">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Failed</span>
+            <span class="stat-value" id="failedCrawls" style="color: #dc3545;">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Running</span>
+            <span class="stat-value" id="runningCrawls" style="color: #ffc107;">0</span>
+        </div>
+    </div>
+
+    <div class="crawls-container" id="crawlsContainer">
+        <div class="loading">Loading crawls...</div>
+    </div>
+
+    <div class="pagination" id="paginationContainer" style="display: none;">
+        <div class="pagination-info" id="paginationInfo"></div>
+        <div class="pagination-controls">
+            <button class="pagination-btn" id="firstPage" onclick="goToPage(1)">First</button>
+            <button class="pagination-btn" id="prevPage" onclick="previousPage()">Previous</button>
+            <input type="number" class="page-input" id="pageInput" min="1" value="1" onchange="goToPageInput()">
+            <span id="totalPages">/ 1</span>
+            <button class="pagination-btn" id="nextPage" onclick="nextPage()">Next</button>
+            <button class="pagination-btn" id="lastPage" onclick="goToLastPage()">Last</button>
+        </div>
+    </div>
+
+    <!-- JSON Modal -->
+    <div class="modal" id="jsonModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">JSON Data</span>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-controls" id="modalControls" style="display: none;">
+                <label>
+                    <input type="checkbox" id="hideBrowserConsole" checked onchange="updateLogDisplay()">
+                    <span>Hide lines containing "Browser Console"</span>
+                </label>
+            </div>
+            <div class="modal-body">
+                <div class="json-viewer" id="jsonContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="imageModalTitle">Screenshots</span>
+                <button class="modal-close" onclick="closeImageModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="image-gallery" id="imageGallery"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Image Viewer -->
+    <div class="fullscreen-viewer" id="fullscreenViewer">
+        <div class="fullscreen-title" id="fullscreenTitle"></div>
+        <button class="fullscreen-close" onclick="closeFullscreen()">&times;</button>
+        <button class="fullscreen-nav prev" id="prevBtn" onclick="navigateImage(-1)">‹</button>
+        <div class="fullscreen-content">
+            <img class="fullscreen-image" id="fullscreenImage" src="" alt="Screenshot">
+        </div>
+        <button class="fullscreen-nav next" id="nextBtn" onclick="navigateImage(1)">›</button>
+        <div class="fullscreen-counter" id="fullscreenCounter"></div>
+    </div>
+
+    <script>
+        let allCrawls = [];
+        let currentPage = 1;
+        let totalPages = 1;
+        let totalCount = 0;
+        let limit = 50;
+        
+        // Fullscreen viewer state
+        let currentImages = [];
+        let currentImageIndex = 0;
+        let currentImageTitle = '';
+        
+        // Log viewer state
+        let currentLogData = null;
+        let currentLogField = null;
+
+        // Load sites for filter
+        async function loadSites() {
+            try {
+                const response = await fetch('api.php?action=get_sites');
+                const data = await response.json();
+                
+                const selector = document.getElementById('siteFilter');
+                data.sites.forEach(site => {
+                    const option = document.createElement('option');
+                    option.value = site;
+                    option.textContent = site;
+                    selector.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading sites:', error);
+            }
+        }
+
+        // Load all crawls
+        async function loadCrawls(page = 1) {
+            const site = document.getElementById('siteFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+            limit = parseInt(document.getElementById('perPage').value);
+            const offset = (page - 1) * limit;
+            
+            const container = document.getElementById('crawlsContainer');
+            container.innerHTML = '<div class="loading">Loading crawls...</div>';
+            
+            try {
+                let url = `api.php?action=get_all_crawls&limit=${limit}&offset=${offset}&sort_by=${sortBy}&sort_order=${sortOrder}`;
+                
+                if (site) {
+                    url += `&site=${encodeURIComponent(site)}`;
+                }
+                
+                if (status) {
+                    url += `&status=${encodeURIComponent(status)}`;
+                }
+                    
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                allCrawls = data.crawls;
+                totalCount = data.total;
+                totalPages = data.pages;
+                currentPage = page;
+                
+                renderCrawls(allCrawls);
+                updateStats(allCrawls);
+                updatePagination();
+            } catch (error) {
+                console.error('Error loading crawls:', error);
+                container.innerHTML = `<div class="empty-state">
+                    <div class="empty-state-icon">❌</div>
+                    <div>Error loading crawls: ${error.message}</div>
+                </div>`;
+            }
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const paginationContainer = document.getElementById('paginationContainer');
+            const paginationInfo = document.getElementById('paginationInfo');
+            const pageInput = document.getElementById('pageInput');
+            const totalPagesSpan = document.getElementById('totalPages');
+            
+            if (totalCount === 0) {
+                paginationContainer.style.display = 'none';
+                return;
+            }
+            
+            paginationContainer.style.display = 'flex';
+            
+            const start = (currentPage - 1) * limit + 1;
+            const end = Math.min(currentPage * limit, totalCount);
+            
+            paginationInfo.textContent = `Showing ${start}-${end} of ${totalCount} crawls`;
+            pageInput.value = currentPage;
+            pageInput.max = totalPages;
+            totalPagesSpan.textContent = `/ ${totalPages}`;
+            
+            // Enable/disable buttons
+            document.getElementById('firstPage').disabled = currentPage === 1;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+            document.getElementById('lastPage').disabled = currentPage === totalPages;
+        }
+
+        // Pagination functions
+        function nextPage() {
+            if (currentPage < totalPages) {
+                loadCrawls(currentPage + 1);
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                loadCrawls(currentPage - 1);
+            }
+        }
+
+        function goToPage(page) {
+            if (page >= 1 && page <= totalPages) {
+                loadCrawls(page);
+            }
+        }
+
+        function goToPageInput() {
+            const page = parseInt(document.getElementById('pageInput').value);
+            goToPage(page);
+        }
+
+        function goToLastPage() {
+            loadCrawls(totalPages);
+        }
+
+        // Update statistics
+        function updateStats(crawls) {
+            // Show total from API, not just current page
+            document.getElementById('totalCrawls').textContent = totalCount;
+            
+            // For status counts, show current page stats
+            const completed = crawls.filter(c => c.status === 'completed').length;
+            const failed = crawls.filter(c => c.status === 'failed').length;
+            const running = crawls.filter(c => c.status === 'running').length;
+            
+            document.getElementById('completedCrawls').textContent = completed;
+            document.getElementById('failedCrawls').textContent = failed;
+            document.getElementById('runningCrawls').textContent = running;
+        }
+
+        // Render crawls
+        function renderCrawls(crawls) {
+            const container = document.getElementById('crawlsContainer');
+            
+            if (crawls.length === 0) {
+                container.innerHTML = `<div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <div>No crawls found</div>
+                </div>`;
+                return;
+            }
+            
+            container.innerHTML = crawls.map(crawl => renderCrawlItem(crawl)).join('');
+        }
+
+        // Render single crawl item
+        function renderCrawlItem(crawl) {
+            const statusClass = `status-${crawl.status}`;
+            const duration = crawl.finished_at 
+                ? calculateDuration(crawl.started_at, crawl.finished_at)
+                : 'In progress';
+            
+            const hasUserData = crawl.user_data && Object.keys(crawl.user_data).length > 0;
+            const hasScreenshots = crawl.screenshot_files && crawl.screenshot_files.length > 0;
+            const hasJsonFiles = crawl.json_files && crawl.json_files.length > 0;
+            const hasLog = crawl.log && crawl.log.length > 0;
+            const hasErrors = crawl.errors && crawl.errors.length > 0;
+            
+            return `
+                <div class="crawl-item">
+                    <div class="crawl-header">
+                        <div class="crawl-title">
+                            <span class="crawl-id">#${crawl.id}</span>
+                            <span class="crawl-site">${crawl.crawl}</span>
+                        </div>
+                        <span class="status-badge ${statusClass}">${crawl.status}</span>
+                    </div>
+                    
+                    <div class="crawl-meta">
+                        <div class="meta-item">
+                            <span>🕐</span>
+                            <span>Started: ${formatDate(crawl.started_at)}</span>
+                        </div>
+                        ${crawl.finished_at ? `
+                        <div class="meta-item">
+                            <span>✓</span>
+                            <span>Finished: ${formatDate(crawl.finished_at)}</span>
+                        </div>
+                        ` : ''}
+                        <div class="meta-item">
+                            <span>⏱️</span>
+                            <span>Duration: ${duration}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ids-grid">
+                        ${renderIdItem('Account ID', crawl.account_id)}
+                        ${renderIdItem('Order ID', crawl.order_id)}
+                        ${renderIdItem('Cart ID', crawl.cart_id)}
+                        ${renderIdItem('Card ID', crawl.card_id)}
+                        ${renderIdItem('Address ID', crawl.address_id)}
+                    </div>
+                    
+                    <div class="json-items">
+                        ${renderJsonBadge('👤 User Data', crawl.user_data, hasUserData, crawl.id, 'user_data')}
+                        ${renderJsonBadge('📸 Screenshots', crawl.screenshot_files, hasScreenshots, crawl.id, 'screenshot_files')}
+                        ${renderJsonBadge('📄 JSON Files', crawl.json_files, hasJsonFiles, crawl.id, 'json_files')}
+                        ${renderJsonBadge('📝 Log', crawl.log, hasLog, crawl.id, 'log')}
+                        ${renderJsonBadge('⚠️ Errors', crawl.errors, hasErrors, crawl.id, 'errors')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render ID item
+        function renderIdItem(label, value) {
+            return `
+                <div class="id-item">
+                    <div class="id-label">${label}</div>
+                    <div class="id-value">${value || 'N/A'}</div>
+                </div>
+            `;
+        }
+
+        // Render JSON badge
+        function renderJsonBadge(label, data, hasData, crawlId, field) {
+            const className = hasData ? 'json-badge has-data' : 'json-badge empty';
+            const onClick = hasData ? `onclick="showJson('${label}', ${crawlId}, '${field}')"` : '';
+            const icon = field === 'screenshot_files' ? '🖼️' : '📋';
+            
+            return `
+                <div class="${className}" ${onClick}>
+                    <span class="json-icon">${icon}</span>
+                    <span>${label}</span>
+                </div>
+            `;
+        }
+
+        // Show JSON in modal
+        function showJson(title, crawlId, field) {
+            const crawl = allCrawls.find(c => c.id === crawlId);
+            if (!crawl) return;
+            
+            const data = crawl[field];
+            
+            // Special handling for screenshots
+            if (field === 'screenshot_files' && Array.isArray(data)) {
+                showImages(title, data);
+                return;
+            }
+            
+            const modal = document.getElementById('jsonModal');
+            const modalControls = document.getElementById('modalControls');
+            document.getElementById('modalTitle').textContent = title;
+            
+            // Store current log data for filtering
+            currentLogData = data;
+            currentLogField = field;
+            
+            // Show/hide controls based on field type
+            if (field === 'log' || field === 'errors') {
+                modalControls.style.display = 'block';
+                updateLogDisplay();
+            } else {
+                modalControls.style.display = 'none';
+                // Display as JSON for other fields
+                document.getElementById('jsonContent').innerHTML = 
+                    `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+            
+            modal.classList.add('show');
+            
+            // Scroll modal to top
+            setTimeout(() => {
+                modal.scrollTop = 0;
+            }, 10);
+        }
+        
+        // Update log display based on filter
+        function updateLogDisplay() {
+            if (!currentLogData || (currentLogField !== 'log' && currentLogField !== 'errors')) {
+                return;
+            }
+            
+            const hideBrowserConsole = document.getElementById('hideBrowserConsole').checked;
+            const jsonContentEl = document.getElementById('jsonContent');
+
+            const prevScrollTop = jsonContentEl.scrollTop;
+
+            function toLines(data) {
+                if (data === null || data === undefined) return [];
+                if (Array.isArray(data)) {
+                    return data.flatMap(item => {
+                        const s = String(item);
+                        return s.split(/\r\n|\n|\r/);
+                    });
+                }
+                if (typeof data === 'string') {
+                    return data.split(/\r\n|\n|\r/);
+                }
+                return JSON.stringify(data, null, 2).split(/\r\n|\n|\r/);
+            }
+
+            let lines = toLines(currentLogData);
+            
+            if (hideBrowserConsole) {
+                lines = lines.filter(line => !String(line).includes('Browser Console'));
+            }
+
+            const pre = document.createElement('pre');
+            pre.textContent = lines.join('\n');
+            jsonContentEl.innerHTML = '';
+            jsonContentEl.appendChild(pre);
+
+            jsonContentEl.scrollTop = Math.min(prevScrollTop, jsonContentEl.scrollHeight);
+        }
+
+        // Show images in fullscreen viewer
+        function showImages(title, files) {
+            currentImages = files;
+            currentImageTitle = title;
+            currentImageIndex = 0;
+            
+            // Open fullscreen viewer immediately
+            openFullscreen();
+        }
+        
+        // Open fullscreen viewer
+        function openFullscreen() {
+            const viewer = document.getElementById('fullscreenViewer');
+            viewer.classList.add('show');
+            updateFullscreenImage();
+        }
+        
+        // Close fullscreen viewer
+        function closeFullscreen() {
+            const viewer = document.getElementById('fullscreenViewer');
+            viewer.classList.remove('show');
+        }
+        
+        // Update fullscreen image display
+        function updateFullscreenImage() {
+            const img = document.getElementById('fullscreenImage');
+            const title = document.getElementById('fullscreenTitle');
+            const counter = document.getElementById('fullscreenCounter');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (currentImages.length === 0) return;
+            
+            img.src = currentImages[currentImageIndex];
+            title.textContent = `${currentImageTitle} - Screenshot ${currentImageIndex + 1}`;
+            counter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+            
+            // Enable/disable navigation buttons
+            prevBtn.disabled = currentImageIndex === 0;
+            nextBtn.disabled = currentImageIndex === currentImages.length - 1;
+        }
+        
+        // Navigate between images
+        function navigateImage(direction) {
+            const newIndex = currentImageIndex + direction;
+            
+            if (newIndex >= 0 && newIndex < currentImages.length) {
+                currentImageIndex = newIndex;
+                updateFullscreenImage();
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const viewer = document.getElementById('fullscreenViewer');
+            if (!viewer.classList.contains('show')) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                navigateImage(-1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                navigateImage(1);
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                closeFullscreen();
+            }
+        });
+
+        // Close modals
+        function closeModal() {
+            document.getElementById('jsonModal').classList.remove('show');
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.remove('show');
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const jsonModal = document.getElementById('jsonModal');
+            const imageModal = document.getElementById('imageModal');
+            if (event.target === jsonModal) {
+                closeModal();
+            }
+            if (event.target === imageModal) {
+                closeImageModal();
+            }
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleString();
+        }
+
+        // Calculate duration
+        function calculateDuration(start, end) {
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+            const diff = endDate - startDate;
+            
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            
+            if (hours > 0) {
+                return `${hours}h ${minutes % 60}m`;
+            } else if (minutes > 0) {
+                return `${minutes}m ${seconds % 60}s`;
+            } else {
+                return `${seconds}s`;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('siteFilter').addEventListener('change', () => loadCrawls(1));
+        document.getElementById('statusFilter').addEventListener('change', () => loadCrawls(1));
+        document.getElementById('sortBy').addEventListener('change', () => loadCrawls(1));
+        document.getElementById('sortOrder').addEventListener('change', () => loadCrawls(1));
+        document.getElementById('perPage').addEventListener('change', () => loadCrawls(1));
+
+        // Initialize
+        loadSites();
+        loadCrawls();
+    </script>
+</body>
+</html>

@@ -45,6 +45,77 @@ class BaseCrawler {
         this.crawl = null;
         this.crawlerName = options.crawlerName || 'unknown';
         this.dbPath = './database/crawls.sqlite';
+
+        // Capture all script console output
+        this.scriptLogs = [];
+        this._setupConsoleCapture();
+    }
+
+    _setupConsoleCapture() {
+        const self = this;
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        const originalInfo = console.info;
+
+        const safeStringify = (obj) => {
+            const seen = new WeakSet();
+            return JSON.stringify(obj, (key, value) => {
+                if (typeof value === 'object' && value !== null) {
+                    if (seen.has(value)) return '[Circular]';
+                    seen.add(value);
+                }
+                return value;
+            });
+        };
+
+        console.log = function(...args) {
+            const message = args.map(a => typeof a === 'object' ? safeStringify(a) : String(a)).join(' ');
+            self.scriptLogs.push({ type: 'log', message, timestamp: Date.now() });
+            if (self.crawl) {
+                self.crawl.addLog(message, true);
+            }
+            originalLog.apply(console, args);
+        };
+
+        console.error = function(...args) {
+            const message = args.map(a => typeof a === 'object' ? safeStringify(a) : String(a)).join(' ');
+            self.scriptLogs.push({ type: 'error', message, timestamp: Date.now() });
+            if (self.crawl) {
+                self.crawl.addLog(`[ERROR] ${message}`, true);
+            }
+            originalError.apply(console, args);
+        };
+
+        console.warn = function(...args) {
+            const message = args.map(a => typeof a === 'object' ? safeStringify(a) : String(a)).join(' ');
+            self.scriptLogs.push({ type: 'warn', message, timestamp: Date.now() });
+            if (self.crawl) {
+                self.crawl.addLog(`[WARN] ${message}`, true);
+            }
+            originalWarn.apply(console, args);
+        };
+
+        console.info = function(...args) {
+            const message = args.map(a => typeof a === 'object' ? safeStringify(a) : String(a)).join(' ');
+            self.scriptLogs.push({ type: 'info', message, timestamp: Date.now() });
+            if (self.crawl) {
+                self.crawl.addLog(`[INFO] ${message}`, true);
+            }
+            originalInfo.apply(console, args);
+        };
+
+        // Store originals for potential restoration
+        this._originalConsole = { log: originalLog, error: originalError, warn: originalWarn, info: originalInfo };
+    }
+
+    _restoreConsole() {
+        if (this._originalConsole) {
+            console.log = this._originalConsole.log;
+            console.error = this._originalConsole.error;
+            console.warn = this._originalConsole.warn;
+            console.info = this._originalConsole.info;
+        }
     }
 
     /**
@@ -144,7 +215,7 @@ class BaseCrawler {
         if (this.crawl) {
             await this.crawl.complete();
             await this.crawl.closeDatabase();
-            console.log('Crawl tracking stopped');
+            console.log('Crawl tracking stopped OK!');
         }
     }
 
@@ -448,15 +519,6 @@ class BaseCrawler {
 
         this.pages.set(domain, page);
 
-
-        // Setup console log capturing (silent mode - saved but not displayed)
-        page.on('console', msg => {
-            const logMessage = `[Browser Console ${msg.type()}] ${msg.text()}`;
-            if (this.crawl) {
-                this.crawl.addLog(logMessage, true); // true = silent mode
-            }
-        });
-
         // Setup error capturing
         page.on('pageerror', error => {
             if (this.crawl) {
@@ -486,7 +548,7 @@ class BaseCrawler {
      * Set up request interception for capturing URLs
      * Only captures XHR requests with text-based content types (JSON, XML, etc.)
      */
-    async setupRequestInterception(page, extraTypes) {
+    async setupRequestInterception(page) {
         // Use response event to filter by content type
         page.on('response', async (response) => {
             const request = response.request();
@@ -523,7 +585,7 @@ class BaseCrawler {
                 'application/ld+json',
                 'application/x-www-form-urlencoded',
                 'application/graphql',
-                ...extraTypes
+                'text/html'
             ];
 
             
@@ -556,7 +618,7 @@ class BaseCrawler {
                     await this.crawl.addXHRRequest(capturedRequest);
                 }
                 
-                console.log(`Captured XHR: ${request.method()} ${request.status} (${contentType}) `);
+                //console.log(`Captured XHR: ${request.method()} ${request.status} (${contentType}) `);
             } catch (error) {
                 // Silently ignore errors (e.g., response body already consumed)
             }
@@ -590,7 +652,7 @@ class BaseCrawler {
 
         // Update existing pages with new interception
         for (const [domain, page] of this.pages.entries()) {
-            await this.setupRequestInterception(page, extraTypes);
+            await this.setupRequestInterception(page);
         }
 
         console.log(`Added ${patterns.length} capture pattern(s)`);

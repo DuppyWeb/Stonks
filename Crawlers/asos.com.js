@@ -20,23 +20,12 @@ const BaseCrawler = require('./base.crawler.js');
     await crawler.startCrawl();
     
     try {
-
+        
         // Open or reuse tab
+        console.log("Opening Home page");
         let page = await crawler.openOrUseTab('https://asos.com');
         
-        //Clear Site Data
-        await crawler.clearSiteData(page, 'https://asos.com');
-        await crawler.clearSiteData(page, 'https://my.asos.com');
-                
-      
-        //Dismiss Cookie Popup
-        await crawler.wait(2);
-        
-        // Open or reuse tab
-        page = await crawler.openOrUseTab('https://asos.com');
-        
-        await crawler.wait(5);
-
+        await crawler.wait(10);
 
         await page.waitForSelector('button[data-testid="myAccountIcon"]');
         await page.click('button[data-testid="myAccountIcon"]');
@@ -59,6 +48,7 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.wait(3);
 
         //Type email
+        console.log("Filling Email");
         await page.waitForSelector('input[id="email"]', {"timeout": 30000} );
         await page.type('input[id="email"]', user.email);
 
@@ -67,6 +57,7 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.wait(8);
         
         //Fill form
+        console.log("Filling rest of the details");
         await page.type('input[id="firstName"]', user.firstName);
 
         await page.type('input[id="lastName"]', user.lastName);
@@ -84,7 +75,7 @@ const BaseCrawler = require('./base.crawler.js');
         }
 
         await crawler.wait(1);
-
+        console.log("Submitting Register Form");
         await page.waitForSelector('button[type="submit"]');
         await page.click('button[type="submit"]');
 
@@ -96,12 +87,12 @@ const BaseCrawler = require('./base.crawler.js');
         // Save screenshot (automatically tracked)
         await crawler.saveScreen(page);
 
+        console.log("Opening MyAccount page");
         await page.goto('https://my.asos.com/my-account');
 
-        
         await crawler.wait(12);
 
-        console.log("Getting User ID")
+        console.log("Getting User ID");
         details = await crawler.getXHRByUrl(/my.asos.com\/api\/customer\/profile\/v2\/customers/);
         try {
             let response = details[0].responseBody;
@@ -112,14 +103,16 @@ const BaseCrawler = require('./base.crawler.js');
                 await crawler.crawl.save();
             }
         } catch (error) {
-            console.error('Failed to get User ID:', error);
+            console.error(error);
+            throw new Error("Failed getting User ID")
         }
 
         //Registering a new Address
+        console.log("Opening Add Address page");
         await page.goto('https://my.asos.com/my-account/addresses/add');
 
         await crawler.wait(4);
-
+        console.log("Filling Address Form");
         await page.evaluate((number)=>{
             document.querySelector('input[name="telephoneMobile"]').value = number;
         }, user.phone)
@@ -144,18 +137,16 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.wait(2);
         await page.type('input[name="postalCode"]', 'ww33ww');
         await crawler.wait(2);
-        await page.click('button[type="submit"]');
 
-        await crawler.wait(3);
+        console.log("Submitting Address Form");
+        await page.click('button[type="submit"]');
+        await crawler.wait(5);
+
 
         await page.goto('https://my.asos.com/my-account/addresses');
-
         await crawler.wait(10);
-
-        console.log("Getting Address ID")
+        console.log("Getting Address ID fron Addresses Page")
         details = await crawler.getXHRByUrl(/api\/customer\/profile\/v2\/customers\/([0-9]+)\/addresses/);
-        console.log("Addresses:", details)
-        console.log("ADL:" + details.length)
 
         for (const address of details) {
             let response = details.responseBody;
@@ -169,9 +160,10 @@ const BaseCrawler = require('./base.crawler.js');
 
 
         //Register a Payment Method
-
+        console.log("Opening Add Payment Method Form");
         await page.goto('https://my.asos.com/my-account/payment-methods/add')
-
+        await crawler.wait(5);
+        console.log("Submitting new Fake Card and Getting Card ID ");
         let cardID = false;
         try {
             cardID = await client.send('Runtime.evaluate', {
@@ -222,33 +214,25 @@ const BaseCrawler = require('./base.crawler.js');
         }
 
 
-        console.log("Getting CardID ID")
+        console.log("Searching for CardID in the database")
         details = await crawler.getXHRByUrl(/\/api\/customer\/paymentdetails\/v2\/customers\/([0-9]+)\/paymentdetails\/cards/);
-        console.log("Cards:", details)
-        console.log("ADL:" + details.length)
+
 
         for (const card of details) {
             let response = details.responseBody;
             let data = JSON.parse(response);
             if (typeof data.cardNumber !== 'undefined' && typeof data.id !== 'undefined' ) {
-                console.log("Setting Card ID: " + data.id)
+                console.log("Found Card ID in DB, setting it to: " + data.id)
                 await crawler.setAddressId(data.id);
                 await crawler.crawl.save();
             }
         }
 
-
-        await crawler.wait(5);
-        await page.click('');
-        await crawler.wait(5);
-
-
         
         // Mark crawl as completed
         await crawler.stopCrawl();
-        console.log('Crawl completed successfully!');
-
         await crawler.closeTab()
+        await crawler.disconnect()
 
         process.exit(0);
 
@@ -258,6 +242,8 @@ const BaseCrawler = require('./base.crawler.js');
     } catch (error) {
         console.error('Crawl failed:', error);
         await crawler.failCrawl(error);
+        await crawler.closeTab();
+        await crawler.disconnect();
     }
     
     //await crawler.disconnect();

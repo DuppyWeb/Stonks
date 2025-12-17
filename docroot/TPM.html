@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%231a1a2e' width='32' height='32' rx='4'/><polyline fill='none' stroke='%2300d26a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' points='4,22 10,18 14,20 18,12 22,14 28,6'/><circle fill='%2300d26a' cx='28' cy='6' r='2.5'/></svg>">
+    <title>Transparency Mode</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-direction: column;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-enable {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-enable:hover {
+            background: #218838;
+        }
+
+        .btn-disable {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-disable:hover {
+            background: #c82333;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-back:hover {
+            background: #5a6268;
+        }
+
+        .info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .info h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info li {
+            color: #666;
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .info li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Transparency Mode</h1>
+        <p class="subtitle">Control site name visibility</p>
+
+        <div id="status" class="status"></div>
+
+        <div class="buttons">
+            <button class="btn-enable" onclick="enableTransparency()">
+                Enable Transparency Mode
+            </button>
+            <button class="btn-disable" onclick="disableTransparency()">
+                Disable Transparency Mode
+            </button>
+            <button class="btn-back" onclick="goBack()">
+                ← Back to Dashboard
+            </button>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="info">
+            <h3>What is Transparency Mode?</h3>
+            <ul>
+                <li><strong>Enabled:</strong> Shows real site names (Revolve, AboutYou, ASOS)</li>
+                <li><strong>Disabled:</strong> Shows obfuscated names (Edric, Gem, Pyre)</li>
+                <li>Setting persists across browser sessions</li>
+                <li>Affects all charts and data displays</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Check current status on load
+        function checkStatus() {
+            const isEnabled = getCookie('mode') === 'noSecrets';
+            const statusDiv = document.getElementById('status');
+            
+            if (isEnabled) {
+                statusDiv.className = 'status active';
+                statusDiv.innerHTML = '✓ Transparency Mode is <strong>ENABLED</strong><br>Real site names are visible';
+            } else {
+                statusDiv.className = 'status inactive';
+                statusDiv.innerHTML = '✗ Transparency Mode is <strong>DISABLED</strong><br>Obfuscated names are shown';
+            }
+        }
+
+        // Get cookie value
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+
+        // Set cookie
+        function setCookie(name, value, days) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+        }
+
+        // Delete cookie
+        function deleteCookie(name) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+        }
+
+        // Show message
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type} show`;
+            
+            setTimeout(() => {
+                messageDiv.className = 'message';
+            }, 3000);
+        }
+
+        // Enable transparency mode
+        function enableTransparency() {
+            setCookie('mode', 'noSecrets', 365); // 1 year
+            checkStatus();
+            showMessage('✓ Transparency Mode enabled! Real site names will now be shown.', 'success');
+        }
+
+        // Disable transparency mode
+        function disableTransparency() {
+            deleteCookie('mode');
+            checkStatus();
+            showMessage('✓ Transparency Mode disabled! Obfuscated names will now be shown.', 'success');
+        }
+
+        // Go back to dashboard
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize on page load
+        checkStatus();
+    </script>
+</body>
+</html>

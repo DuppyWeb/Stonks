@@ -1,0 +1,19 @@
+[Unit]
+Description=Crawler Scheduler Service
+After=network.target
+
+[Service]
+Type=simple
+User=stonks
+WorkingDirectory=/home/stonks/Workdir/Stonks/Crawlers
+ExecStart=/usr/bin/node /home/stonks/Workdir/Stonks/Crawlers/scheduler.js
+Restart=always
+RestartSec=10
+StandardOutput=append:/home/stonks/Workdir/Stonks/Crawlers/logs/scheduler.log
+StandardError=append:/home/stonks/Workdir/Stonks/Crawlers/logs/scheduler-error.log
+
+# Environment
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

@@ -45,7 +45,7 @@ const BaseCrawler = require('./base.crawler.js');
 
 
         // Capture specific URLs
-        await crawler.capture([/www.revolve.com\/r\/ajax\//], 'text/html');
+        await crawler.capture([/www.revolve.com\/r\/ajax\//]);
 
         /*
         await page.mouse.move(1651, 870, { steps: 25 }); // 25 small steps = smooth
@@ -307,8 +307,8 @@ const BaseCrawler = require('./base.crawler.js');
     } catch (error) {
         console.error('Crawl failed:', error);
         await crawler.failCrawl(error);
-        //await crawler.closeTab();
-        //await crawler.disconnect();
+        await crawler.closeTab();
+        await crawler.disconnect();
         process.exit(2);
     }
 

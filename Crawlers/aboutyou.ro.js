@@ -33,7 +33,7 @@ const BaseCrawler = require('./base.crawler.js');
         //Dismiss Cookie Popup
         await crawler.wait(4);
 
-
+        console.log("Dismissing GEO Prompt if present");
         await page.evaluate(()=>{
             const allSpans = Array.from(document.querySelectorAll('span'));
             const targetSpan = allSpans.find(span =>
@@ -49,17 +49,18 @@ const BaseCrawler = require('./base.crawler.js');
 
         
         // Open or reuse tab
+        console.log("Dismissing GEO Prompt if present");
         page = await crawler.openOrUseTab('https://www.aboutyou.ro/magazinul-tau?loginFlow=register');
         
-         await crawler.wait(10);
-
+        await crawler.wait(10);
+        console.log("Dismissing Cookie Prompt if present");
         await page.mouse.move(1630, 1035, { steps: 25 }); // 25 small steps = smooth
         await page.mouse.down();
         await page.mouse.up();
         await crawler.wait(2);
         await  crawler.saveScreen(page);
 
-
+        console.log("Waiting for First Name");
         await page.waitForSelector('input[data-testid="FirstnameField"]');
 
         // Capture specific URLs
@@ -73,6 +74,7 @@ const BaseCrawler = require('./base.crawler.js');
         crawler.crawl.setUserData(user);
         await crawler.crawl.save();
 
+        console.log("Filling in Reg From");
         await page.type('input[data-testid="FirstnameField"]', user.firstName);
 
         await page.type('input[data-testid="LastNameField"]', user.lastName);
@@ -85,7 +87,7 @@ const BaseCrawler = require('./base.crawler.js');
 
 
         await crawler.saveScreen(page);
-        console.log("Turnstile Location Saved");
+        console.log("Turnstile Checking");
         // Handle Cloudflare Turnstile checkbox if present
         await page.mouse.move(842, 772, { steps: 25 }); // 25 small steps = smooth
         await page.mouse.down();
@@ -93,10 +95,12 @@ const BaseCrawler = require('./base.crawler.js');
 
         await crawler.wait(5 );
 
+        console.log("Submitting Reg Form");
         await page.click('button[data-testid="RegisterSubmitButton"]');
 
         await crawler.wait(10 );
 
+        console.log("Dismissing GEO Prompt if present");
         await page.evaluate(()=>{
             const allSpans = Array.from(document.querySelectorAll('span'));
             const targetSpan = allSpans.find(span =>
@@ -110,7 +114,7 @@ const BaseCrawler = require('./base.crawler.js');
             }
         })
 
-
+        console.log("Opening Profile Page");
         await page.goto('https://www.aboutyou.ro/a/profile');
 
         await crawler.wait(10);
@@ -127,11 +131,13 @@ const BaseCrawler = require('./base.crawler.js');
 
         //Create an Order and Cancel it 
 
+        console.log("Opening Product Page");
         await page.goto('https://www.aboutyou.ro/p/adidas-originals/rucsac-adicolor-13836634');
 
 
         await crawler.wait(5);
 
+        console.log("Dismissing GEO Prompt if present");
         await page.evaluate(()=>{
             const allSpans = Array.from(document.querySelectorAll('span'));
             const targetSpan = allSpans.find(span =>
@@ -149,19 +155,19 @@ const BaseCrawler = require('./base.crawler.js');
 
 
         await crawler.wait(5);
-
+        console.log("Add to Cart");
         await page.click('button[data-testid="addToBasketButton"]')
         
         await crawler.wait(10);
 
         await crawler.saveScreen(page);
-      
+        console.log("Opening Cart");
         await page.goto('https://www.aboutyou.ro/cos-cumparaturi');
 
         await crawler.saveScreen(page);
 
         await crawler.wait(5);
-        
+        console.log("Going to Checkout");
         await page.click('button[data-testid="proceedToCheckoutButton"]');
 
         await crawler.wait(5);
@@ -205,6 +211,7 @@ const BaseCrawler = require('./base.crawler.js');
             }, inputSelector, text);
         }
 
+        console.log("Adding Shipping Address");
         // Fill in shipping address fields
         await typeIntoShadowDOM(page, 'input[id="shippingAddress.street"]', 'Drumul Bisericii 36-38');
         await crawler.wait(2);
@@ -230,6 +237,7 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.saveScreen(page);
 
         // Click next button
+        console.log("Advancing to next Shipping Address");
         await page.evaluate(() => {
             let host = document.querySelector('scayle-checkout');
             let shadowRoot = host?.shadowRoot;
@@ -237,8 +245,10 @@ const BaseCrawler = require('./base.crawler.js');
         });
         
         await crawler.wait(10);   
-        
+
+
         // Click payment option
+        console.log("Selecting Payment Cash On Delivery");
         await page.evaluate(() => {
             const host = document.querySelector('scayle-checkout');
             const shadowRoot = host?.shadowRoot;
@@ -255,6 +265,7 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.saveScreen(page);
 
         // Click final next button
+        console.log("Placing Order");
         await page.evaluate(() => {
             const host = document.querySelector('scayle-checkout');
             const shadowRoot = host?.shadowRoot;
@@ -268,24 +279,25 @@ const BaseCrawler = require('./base.crawler.js');
 
         await crawler.saveScreen(page);
 
-        await crawler.wait(5);         
+        await crawler.wait(5);
 
+        console.log("Visiting Orders Page");
         await page.goto('https://www.aboutyou.ro/a/orders');
 
         await crawler.wait(5);
 
         await crawler.saveScreen(page);
-
+        console.log("Getting Order ID");
         let orderId  = await page.evaluate(()=>{
             return  document.querySelector('div[data-testid="OrderId"]').textContent;
         })
-
+        console.log("Got Order ID", orderId);
         await crawler.setOrderId(orderId);    
 
         await page.click('div[data-testid="OrderId"]');
 
         await crawler.wait(3);
-
+        console.log("Canceling Order");
         await page.click('button[aria-label="Retrage comanda"]');
 
         await crawler.wait(3);
@@ -298,7 +310,6 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.saveScreen(page);
 
         await crawler.stopCrawl();
-        console.log('Crawl completed successfully!');
 
         await crawler.disconnect();
 
@@ -307,6 +318,8 @@ const BaseCrawler = require('./base.crawler.js');
     } catch (error) {
         console.error('Crawl failed:', error);
         await crawler.failCrawl(error);
+        await crawler.disconnect();
+        process.exit(2);
     }
     
 

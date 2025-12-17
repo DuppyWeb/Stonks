@@ -1,0 +1,57 @@
+Email Validated Registartion
+
+9 192 703
+9 192 731
+
+{
+    "data": {
+        "createVerifiedUser": {
+            "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjo5MTkyNzAzLCJqdGkiOiI2RVVudU1tc0gzUkFqMkFDTHNZbWpiUW8iLCJ0eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3MDkwNDI1LCJpYXQiOjE3NjU4ODA4MjV9.3IYzg6Y5YDZQr9O9m5Zg6S2RmSuZ_mFWPXfyQqBf0fMjjygNBPienY5m4nImHVJx6ImkyMXEu1moEq4IqqBJFw",
+            "errors": null,
+            "message": null,
+            "success": true,
+            "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjo5MTkyNzAzLCJqdGkiOiI2RVVudU1tc0gzUkFqMkFDTHNZbWpiUW8iLCJ0eXBlIjoicmVmcmVzaCIsImV4cCI6MTc5NzQzODQyNS4wLCJpYXQiOjE3NjU4ODA4MjV9.HrItafiCA2BIYNqpQDAOVS4UeDAAyOUwfuyNv-h-m_TDnP_aZvISi_X8NUdjB7rUVzMW5ICLdcUpvPLgs4RVrQ",
+            "orderGuestToken": null,
+            "__typename": "CreateVerifiedUserPayload"
+        }
+    }
+}
+
+{
+  "user_id": 9192731,
+  "jti": "bmyQU7mVx4saZjqF38JukiGL",
+  "type": "access",
+  "exp": 1767090750,
+  "iat": 1765881150
+}
+
+
+eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjo5MTkyNzMxLCJqdGkiOiJibXlRVTdtVng0c2FaanFGMzhKdWtpR0wiLCJ0eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3MDkwNzUwLCJpYXQiOjE3NjU4ODExNTB9.7WHvhQItXuVDVaV5V2EP630N91L0gzz-kqtS20UEJjhI_cQikqDybSyXfns7UeRlSo3eAzoiPueB2KedcHsWbQ
+
+
+{
+    "data": {
+        "createOrUpdateUserAddress": {
+            "address": {
+                "id": 39890671,
+                "firstname": "Bencsik",
+                "lastname": "Oszkar",
+                "address1": "Drumul Biserici 36-38, Vila 12",
+                "__typename": "UserAddress"
+            },
+            "success": true,
+            "errors": null,
+            "__typename": "CreateOrUpdateUserAddressPayload"
+        }
+    }
+}
+
+{
+    "data": {
+        "receipt": {
+            "id": "gid://shopify/ProcessedReceipt/6645042184547",
+            "pollDelay": 500,
+            "__typename": "WaitingReceipt"
+        }
+    }
+}

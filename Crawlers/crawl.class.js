@@ -154,7 +154,7 @@ class Crawl {
             );
         }
 
-        console.log(`\n\nScreenshot added to crawl: /home/stonks/Workdir/Stonks/Crawlers/${filePath}\n\n`);
+        console.log(`Screenshot added to crawl: /home/stonks/Workdir/Stonks/Crawlers/${filePath}`);
     }
 
     /**
