@@ -11,7 +11,7 @@ class CrawlerScheduler {
                 name: 'aboutyou',
                 script: 'aboutyou.ro.js',
                 modes: {
-                    order: { interval: 3 * 60 * 60 * 1000 }, // 1 hour
+                    order: { interval: 8 * 60 * 60 * 1000 }, // 1 hour
                     user: { interval: 60 * 60 * 1000 },   // 1 hour (future)
                     address: { interval: 8 * 60 * 60 * 1000 }, // 8 hours (future)
                     card: { interval: 8 * 60 * 60 * 1000 }  // 8 hours (future)
@@ -22,7 +22,7 @@ class CrawlerScheduler {
                 name: 'asos',
                 script: 'asos.com.js',
                 modes: {
-                    order: { interval: 3 *60 * 60 * 1000 },
+                    order: { interval: 8 *60 * 60 * 1000 },
                     user: { interval: 60 * 60 * 1000 },
                     address: { interval: 8 * 60 * 60 * 1000 },
                     card: { interval: 8 * 60 * 60 * 1000 }
@@ -33,7 +33,7 @@ class CrawlerScheduler {
                 name: 'revolve',
                 script: 'revolve.com.js',
                 modes: {
-                    order: { interval: 3 * 60 * 60 * 1000 },
+                    order: { interval: 8 * 60 * 60 * 1000 },
                     user: { interval: 60 * 60 * 1000 },
                     address: { interval: 8 * 60 * 60 * 1000 },
                     card: { interval: 8 * 60 * 60 * 1000 }
@@ -44,7 +44,7 @@ class CrawlerScheduler {
                 name: 'mytheresa',
                 script: 'mytheresa.com.js',
                 modes: {
-                    order: { interval: 4 * 60 * 60 * 1000 },
+                    order: { interval: 8 * 60 * 60 * 1000 },
                     user: { interval: 60 * 60 * 1000 },
                     address: { interval: 8 * 60 * 60 * 1000 },
                     card: { interval: 8 * 60 * 60 * 1000 }
