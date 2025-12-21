@@ -149,13 +149,21 @@ const BaseCrawler = require('./base.crawler.js');
         details = await crawler.getXHRByUrl(/api\/customer\/profile\/v2\/customers\/([0-9]+)\/addresses/);
 
         for (const address of details) {
-            let response = details.responseBody;
-            let data = JSON.parse(response);
-            if (typeof data.addresses[0] !== 'undefined') {
-                console.log("Setting Address ID: " + data.addresses[0].addressId)
-                await crawler.setAddressId(data.addresses[0].addressId);
-                await crawler.crawl.save();
+            if (typeof details.responseBody !== "undefined") {
+                try {
+                    let response = details.responseBody;
+                    let data = JSON.parse(response);
+                    if (typeof data.addresses[0] !== 'undefined') {
+                        console.log("Setting Address ID: " + data.addresses[0].addressId)
+                        await crawler.setAddressId(data.addresses[0].addressId);
+                        await crawler.crawl.save();
+                    }
+                } catch (error) {
+                    console.error('Error processing address:', error);
+                }
+
             }
+            
         }
 
 
