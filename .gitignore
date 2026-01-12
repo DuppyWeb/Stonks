@@ -1,5 +1,6 @@
 .idea
 _ChromeDataDir
+_ChromeDataDir2
 node_modules
 Crawlers/database
 Crawlers/package-lock.json

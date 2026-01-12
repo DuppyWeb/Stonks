@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "pm2": "^6.0.14",
-    "puppeteer": "^24.32.1",
+    "puppeteer": "^24.34.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "sqlite": "^5.1.1",

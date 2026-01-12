@@ -8,7 +8,7 @@ const Crawl = require('./crawl.class');
 
 class BaseCrawler {
     constructor(options = {}) {
-        this.debugUrl = 'http://127.0.0.1:9222';
+        this.debugUrl = options.debugUrl || 'http://127.0.0.1:9222';
         this.browser = null;
         this.incognitoContext = null; // Incognito browser context
         this.useIncognito = options.useIncognito !== undefined ? options.useIncognito : true; // Use incognito by default

@@ -1,9 +1,12 @@
 const BaseCrawler = require('./base.crawler.js');
+const { faker } = require('@faker-js/faker');
 
 (async () => {
     const crawler = new BaseCrawler({
+        //debugUrl : 'http://10.11.0.2:9889',
+        debugUrl : 'http://10.11.0.2:9223',
         crawlerName: 'asos.com',
-        useIncognito: true, 
+        useIncognito: false, 
         proxy: {
             enabled: true,
             host: 'proxy.packetstream.io',
@@ -27,9 +30,19 @@ const BaseCrawler = require('./base.crawler.js');
         
         await crawler.wait(10);
 
-        await page.waitForSelector('button[data-testid="myAccountIcon"]');
-        await page.click('button[data-testid="myAccountIcon"]');
-
+        try {
+            await page.click('button[id="onetrust-accept-btn-handler"]');
+        } catch (e) {
+            //Silent
+        }   
+        
+        await crawler.wait(5);
+        
+        await page.waitForSelector('div[id="myAccountDropdown"]');
+        await page.hover('div[id="myAccountDropdown"]');
+        
+        console.log("Dropdown opened");
+        await crawler.wait(5);
         
         await page.waitForSelector('button[data-testid="signup-link"]');
         await page.click('button[data-testid="signup-link"]');
@@ -48,9 +61,11 @@ const BaseCrawler = require('./base.crawler.js');
         await crawler.wait(3);
 
         //Type email
-        console.log("Filling Email");
+        const gmail = faker.internet.email({ provider: 'gmail.com' }).toLowerCase();
+        console.log("Filling Email", gmail);
         await page.waitForSelector('input[id="email"]', {"timeout": 30000} );
-        await page.type('input[id="email"]', user.email);
+
+        await page.type('input[id="email"]', gmail);
 
         await page.click('button[type="submit"]');
 
@@ -170,57 +185,85 @@ const BaseCrawler = require('./base.crawler.js');
         //Register a Payment Method
         console.log("Opening Add Payment Method Form");
         await page.goto('https://my.asos.com/my-account/payment-methods/add')
-        await crawler.wait(5);
-        console.log("Submitting new Fake Card and Getting Card ID ");
+        await crawler.wait(10);
+        console.log("Clicking add new card button");
         let cardID = false;
         try {
+            const client = await page.target().createCDPSession();
             cardID = await client.send('Runtime.evaluate', {
                 awaitPromise: true,
                 expression: `//CDP
                             (async() => {
                                 const sleep = ms => new Promise(r => setTimeout(r, ms));
-                                
-                                function setNativeValue(selector, value) {
-                                    let element =  document.querySelector(selector);
-                                    const valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-                                    const prototype = Object.getPrototypeOf(element);
-                                    const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
-                                    if (valueSetter && valueSetter !== prototypeValueSetter) {
-                                        prototypeValueSetter.call(element, value);
-                                    } else {
-                                        valueSetter.call(element, value);
-                                    }
-                                    element.dispatchEvent(new Event('input', { bubbles: true }));
-                                    element.dispatchEvent(new Event('change', { bubbles: true }));
-                                }
-                                
                                 document.querySelector('a[data-auto-id="AddNewCardButton"]').click();
                                 await sleep(10000);
-                                
-                                setNativeValue('input[id="cardNumber"]', '{$user.card.number}');
-                                await sleep(2000);
-                                document.querySelector('select#expiryMonth').value = '${user.card.expiryMonth}';
-                                document.querySelector('select#expiryMonth').dispatchEvent(new Event('change', { bubbles: true }));
-                                await sleep(2000);
-                                document.querySelector('select#expiryYear').value = '${user.card.expiryYearFull}';
-                                document.querySelector('select#expiryYear').dispatchEvent(new Event('change', { bubbles: true }));
-                                await sleep(2000);
-                                setNativeValue('input[id="cardName"]', '{$user.firstName} {$user.lastName}');
-                                await sleep(2000);
-                                document.querySelector('button[type="submit"]').click();
-                                await sleep(8000);
-                                document.querySelector('div[data-auto-id="PaymentMethod"]').querySelector('button').click();
-                                await sleep(3000);
-                                document.querySelector('button[data-auto-id="DeletePaymentMethodModalAccept"]').click();
-                                
-                                
-                            })()
-                          `
-            });
+                            })()`
+                });
         } catch (e) {
+            console.log("Opening Add Card Modal failed");
             console.log(e);
         }
 
+        await crawler.wait(10);
+        
+        //Fill Card Details inside iframe
+        const frame = page.frames().find(f => f.url().includes('payments-iframe'));
+        
+
+        if (frame) {
+            console.log("Iframe Found");
+            await frame.evaluate(async(user) => {
+
+                const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+                function setNativeValue(selector, value) {
+                    let element =  document.querySelector(selector);
+                    const valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                    const prototype = Object.getPrototypeOf(element);
+                    const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+                    if (valueSetter && valueSetter !== prototypeValueSetter) {
+                        prototypeValueSetter.call(element, value);
+                    } else {
+                        valueSetter.call(element, value);
+                    }
+                    element.dispatchEvent(new Event('input', { bubbles: true }));
+                    element.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+  
+                setNativeValue('input[id="cardNumber"]', user.card.number);
+                await sleep(2000);
+
+                document.querySelector('select#expiryMonth').value = user.card.expiryMonth;
+                document.querySelector('select#expiryMonth').dispatchEvent(new Event('change', { bubbles: true }));
+                await sleep(2000);
+
+                document.querySelector('select#expiryYear').value = user.card.expiryYearFull;
+                document.querySelector('select#expiryYear').dispatchEvent(new Event('change', { bubbles: true }));
+                await sleep(2000);
+
+                setNativeValue('input[id="cardName"]', `${user.firstName} ${user.lastName}`);
+                await sleep(2000);             
+
+
+            }, {card: user.card, firstName: user.firstName, lastName: user.lastName});
+
+            await crawler.wait(2);  
+            console.log("Submitting Card Details");     
+            await page.click('button[type="submit"]');
+            await crawler.wait(8);
+
+            page.evaluate(async() => {
+                const sleep = ms => new Promise(r => setTimeout(r, ms));
+                document.querySelector('div[data-auto-id="PaymentMethod"]').querySelector('button').click();
+                await sleep(3000);
+                document.querySelector('button[data-auto-id="DeletePaymentMethodModalAccept"]').click();
+            });          
+         
+           
+
+        } else {
+            console.log("Failed to get iframe for Card Details");
+        }
 
         console.log("Searching for CardID in the database")
         details = await crawler.getXHRByUrl(/\/api\/customer\/paymentdetails\/v2\/customers\/([0-9]+)\/paymentdetails\/cards/);

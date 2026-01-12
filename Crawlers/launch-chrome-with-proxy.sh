@@ -34,7 +34,7 @@ CHROME_ARGS=(
 
 # create a small script run_chrome.sh
 # x11vnc -display :80 -shared -forever -noxrecord -noxdamage -rfbport 5950
-# sudo Xorg :80 -config /etc/X11/xorg.conf.d/20-dummy.conf -noreset +extension GLX +extension RANDR -logfile /tmp/X80.log
+# sudo Xorg :80 -config /etc/X11/xorg.conf.d/20-dummy.conf -noreset +ex tension GLX +extension RANDR -logfile /tmp/X80.log
 #
 #
 #
